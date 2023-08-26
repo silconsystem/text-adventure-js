@@ -66,8 +66,19 @@ const newDiskTemplate = () => ({
             } else {
               println(`There is nothing to use the axe on.`);
             }
+            
+            const child = getCharacter('child');
+            
+            if (child.alive) {
+              println(`in one swing you behead the CHILD`);
+              
+              println(`game over, better don't kill children...`);
+              
+              enterRoom('death');
+              console.log('killed child, game over');
+            }                        
           },
-        }
+        },
       ],
       exits: [
         {
@@ -280,25 +291,48 @@ const newDiskTemplate = () => ({
     // LARGE HALL
     {
       id: 'large hall',
-      imgUrl: 'img/room-placeholder.png',
+      imgUrl: 'img/large_hall.png',
       name: 'large hall',
-      desc: `it's a large hall`,
+      desc: `you enters a vast, dimly lit HALL. The ceiling is high, supported by ancient stone pillars. He notices TWO unusual CREATURES standing before him.`,
+      items: [
+        {
+          name: 'reptile',
+          imgUrl: 'img/item/frog.png',
+          desc: `a small reptile it seems, CREATURE TWO has is in his hands`,
+          isTakeable: false,
+        },
+      ],
       exits: [
         {
           dir: 'west',
           id: 'tunnel,'
+        },
+        {
+          dir: ['south', 'down'],
         },
       ],
     },
     // DEATH
     {
       id: 'death',
-      imgUrl: 'img/room-placeholder.png',
+      imgUrl: 'img/game_over.png',
       name: 'death',
-      desc: 'you have died, nothing else to do but LOAD or RESET',
+      desc: 'you have died, nothing else to do but LOAD or REFRESH, there is a big red BUTTON in front on you',
+      items: [
+        {
+          name: ['refresh', 'button'],
+          desc: 'a big red button',
+          onUse: () => window.location.reload(),
+        },
+      ],
     },
     
   ],
+  /**
+   * 
+   *         CHARACTERS 
+   * 
+  **/
   characters: [
     // PLAYER
     {
@@ -310,6 +344,7 @@ const newDiskTemplate = () => ({
     // START ROOM
     {
       name: ['child', 'kid'],
+      alive: true,
       roomId: 'start',
       desc: 'this KID is crying his little face off !!!',
       onTalk: () => println(`can you help me open this door ?`),
@@ -386,7 +421,7 @@ const newDiskTemplate = () => ({
     },
     // TUNNEL
     {
-      name: 'joey',
+      name: ['joey', 'kangaroo'],
       roomId: 'tunnel',
       health: 25,
       turns: 4,
@@ -466,6 +501,35 @@ const newDiskTemplate = () => ({
             }                         
             console.log(player.health, enemy.health, enemy.turns, enemy.name);          
           },
+        },
+      ],
+    },
+    {
+      name: ['creature one', 'creature two'],
+      roomId: 'large_hall',
+      health: 100,
+      turns: 2,
+      beaten: false,
+      desc: [
+        'creature one hisses, Who dares enter our domain?',
+        'creature two whispers, Hmmmmm it is a surface dweller. Interesting.'
+      ],
+      onTalk: () => println('what is your business here, human ?'),
+      topics: [
+        {
+           option: 'I just wanted to help a kid find his frog !!!',
+           removeOnRead: true,
+           onSelected() {
+             println(`you speak in riddles, human says CREATURE ONE`);
+             println('here is your FROG, human...');
+             
+             createNewItem('reptile',
+                           'frog',
+                           'img/item/frog.png',
+                           `it's the childs frog, it fits in your pocket`,
+                           true
+                           );
+           }
         },
       ],
     },

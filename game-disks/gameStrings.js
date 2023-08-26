@@ -35,4 +35,10 @@ const gameStrings = () => ({
                         ],                
     },
   ],
+  battle: [
+    {
+      room: 'large_hall',
+      name: '',
+    },
+  ],
 });
