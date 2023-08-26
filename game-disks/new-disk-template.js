@@ -51,10 +51,7 @@ const newDiskTemplate = () => ({
           isTakeable: true,
           onUse() {
           
-            const chars = getCharactersInRoom('start');
-            const chr = ('child', chars.name);
-            
-            console.log(chars + " " + chr);
+            console.log(getInput());
            
             const room = getRoom('start');
             const exit = getExit('north', room.exits);
@@ -66,17 +63,6 @@ const newDiskTemplate = () => ({
             } else {
               println(`There is nothing to use the axe on.`);
             }
-            
-            const child = getCharacter('child');
-            
-            if (child.alive) {
-              println(`in one swing you behead the CHILD`);
-              
-              println(`game over, better don't kill children...`);
-              
-              enterRoom('death');
-              console.log('killed child, game over');
-            }                        
           },
         },
       ],
@@ -526,7 +512,7 @@ const newDiskTemplate = () => ({
              createNewItem('reptile',
                            'frog',
                            'img/item/frog.png',
-                           `it's the childs frog, it fits in your pocket`,
+                           `it's the childs frog, you fit it in your pocket`,
                            true
                            );
            }
