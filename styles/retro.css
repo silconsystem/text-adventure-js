@@ -1,0 +1,241 @@
+@font-face{
+  font-family: 'Apple II';
+  src: url('../fonts/font.ttf');
+}
+
+body {
+  color: #ff8012;
+  font-size: 2.2vh;
+  font-family: 'Apple II';
+  line-height: 4vh;
+  /* screen glow */
+  background-image: radial-gradient(
+    #1f0b00, black 120%
+  );
+  /* text glow */
+  text-shadow: 0 0 5px rgba(255, 78, 0, 0.6);
+}
+
+/* scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(rgba(255, 78, 0, 0.03) 0.5vh, rgba(0, 0, 0, 0.05) 0.8vh);
+  z-index: -1;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 2vw;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #59251e;
+  width: 50px;
+  height: 20px;
+  outline: 2px solid #634744;
+  border-radius: 5px;
+}
+
+.img {
+  white-space: pre;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#graphics {
+  height: 200px;
+  background-color: #fff;
+}
+
+/* HEALTH BAR */
+#healthbar {
+  width: 300px;
+  height: 20px;
+  background-color: green;
+}
+
+#healthvalue {
+  text-align: center;
+  font-weight: bold;
+}
+
+#image {
+  border: 2px;
+}
+
+h2 {
+  margin-left: -100px;
+  font-size: 2vw;
+}
+/* INVENTORY AND GRAPHICS */
+#inventory {
+  padding-top: 32px;
+  font-size: 2vw;
+}
+.parent {
+  display: flex;
+}
+
+.child {
+  flex: 1;
+  background-color: #303030;
+}
+
+.child:first-child {
+  flex: 2;
+  background-color: #202020;
+}
+/* NAV BUTTONS INVENTORY */
+#inventory-nav {
+  position: absolute;
+  top: 64px;
+  right: 0px;
+}
+
+#inventory-nav button {
+  width: 32px;
+  height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  display: flex;
+}
+
+.inventory-nav-button {
+  top: 32px;
+  background: transparent url("../img/up-arrow.png") no-repeat center;
+  border: 2px solid #000;
+  background-color: #fff;
+}
+
+.inventory-nav-buttons button {
+  border: 2px solid #000;
+  border-radius: 6px;
+}
+
+.inventory-nav-button img {
+  transition: transform 0.1s;
+}
+
+.arrow-up {
+  transform: rotate(0deg);
+}
+
+.arrow-up:active {
+  transform: scale(0.1, 0.1);
+}
+
+.arrow-down {
+  transform: rotate(180deg);  
+}
+
+.arrow-down:active {
+  transform: scale(0.1, 0.1);
+}
+
+.inventory-nav-button::first-child {
+  flex: 2;
+  position: absolute;
+  top: 64px;
+  display: block;
+}
+
+#item-icon {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  margin-left: -100px;
+}
+
+#output {
+  width: 90%;
+  height: 300;
+  padding: 2vw 2vw 0 2vw;
+  overflow-y: scroll;
+  font-size: 1.8vw;
+}
+
+#output div {
+  top: 200px;
+  margin-bottom: 1vw;
+}
+
+.scrollable {
+  height: 300px;
+}
+
+.input {
+  display: flex;
+}
+
+#instructions {
+  font-size: 2vw;
+  animation: blink 2s infinite step-end;}
+
+#instructions .marquee {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  padding-left: 2vw;
+}
+
+#instructions .marquee span {
+  display: inline-block;
+  animation: marquee 10s linear infinite, blink 1s infinite step-end;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }  
+}
+
+@keyframes blink {
+  50% {
+    visibility: hidden;
+  }
+}
+
+a {
+  color: orange;
+}
+
+#input {
+  height: 4vh;
+  width: 98.5vh;
+  color: orange;
+  background: transparent;
+  font-size: 2vh;
+  font-family: "Apple II";
+  border: none;
+  position: relative;
+  bottom: 0.175vh;
+  margin-left: .5vw;
+}
+
+span {
+  margin-left: 2vw;
+}
+
+#input:focus {
+  outline: none;
+}
+
+@keyframes blink {
+  0% {background: transparent;}
+  49% {background: black;}
+  60% {background: transparent;}
+  99% {background: transparent;}
+  100% {background: black;}
+}
