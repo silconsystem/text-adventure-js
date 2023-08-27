@@ -308,11 +308,11 @@ const newDiskTemplate = () => ({
       exits: [
         {
           dir: 'west',
-          id: 'tunnel,'
+          id: 'tunnel',
         },
-        {
-          dir: ['south', 'down'],
-        },
+    //    {
+    //      dir: ['south', 'down'],
+    //    },
       ],
     },
     // DEATH
@@ -465,6 +465,9 @@ const newDiskTemplate = () => ({
                 println(`you beat ${enemy.name}, you got ${randomNumber} bonus, your health is: ${player.health}.`);
                 
                 enemy.desc = `it was just some dude with a kangaroo suit on, scared the life out of me !!! not so tough now, huh !?`;
+                enemy.onTalk = function() {println('it only mumbles gibberish!?')};
+                
+                room.desc = 'the figure scurried off into a corner, what was going on just now?';
                          
                 if (exit.block) {
                 
@@ -493,6 +496,7 @@ const newDiskTemplate = () => ({
               enemy.topics = 'you still want MORE ?';
               enemy.desc = `come at ${enemy.name} again!? with ${player.health} points ?`;
               enemy.turns = 1;
+              
             } else if (result === "game_over") {
               
               player.alive = false;
@@ -508,22 +512,26 @@ const newDiskTemplate = () => ({
       ],
     },
     {
-      name: ['creature one', 'creature two'],
-      roomId: 'large_hall',
+      name: 'creatures',
+      roomId: 'large hall',
       health: 100,
       turns: 2,
       beaten: false,
       desc: [
-        'creature one hisses, Who dares enter our domain?',
-        'creature two whispers, Hmmmmm it is a surface dweller. Interesting.'
+        'the first of the CREATURES hisses, Who dares enter our domain?',
+        'the 2nd of the CREATURES two whispers, Hmmmmm it is a surface dweller. Interesting.'
       ],
       onTalk: () => println('what is your business here, human ?'),
       topics: [
         {
-           option: 'I just wanted to help a kid find his frog !!!',
+           option: 'I just wanted to help a KID find his frog !!!',
+           line: 'seems you found it ',
            removeOnRead: true,
            onSelected() {
-             println(`you speak in riddles, human says CREATURE ONE`);
+             
+             const creature = getCharacter('creatures');
+             
+             println(`you speak in riddles, human says one of the CREATURES`);
              println('here is your FROG, human...');
              
              createNewItem('reptile',
@@ -532,7 +540,52 @@ const newDiskTemplate = () => ({
                            `it's the childs frog, you fit it in your pocket`,
                            true
                            );
+                           
+             creature.onTalk = function() {println('we have a use for you !')};
+             creature.topics = [
+               {
+                 option: 'you DONT',
+                 line: 'we do!',
+                 removeOnRead: true,
+               },
+               {
+                 option: 'you CANT',
+                 line: 'we shall!',
+                 removeOnRead: true,
+               },
+               {
+                 option: 'you WONT',
+                 line: 'we already have ',             
+                 onSelected() {
+                   
+                   const result = initializeGame('player', 'creatures', 'large hall');
+                   
+                   if (result === "won") {
+                     
+                     creature.topics = [
+                       {
+                         option: 'I BEAT you',
+                         line: 'you sure did',
+                       },
+                     ];
+                   } else if (result === "loss") {
+                     
+                     creature.topics = [
+                       {
+                         option: 'I BEAT you',
+                         line: 'you sure did',
+                       },
+                     ];
+                   }
+                 },
+               },
+             ];
            }
+        },
+        {
+          option: 'just STUMBLED in...',
+          line: 'is that so',
+          removeOnRead: true, 
         },
       ],
     },
