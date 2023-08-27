@@ -3,16 +3,13 @@
 **/
 
 // initialize game logic to optimize game
-function initializeGame(playerName, enemyName, itemName, roomName) {
+function initializeGame(playerName, enemyName, roomName) {
 
   // get characters
   const player = createCharacter(playerName);
   
   //if ['name', 'name'] create a name array for multiple names
   const enemy = createCharacter(enemyName) ? enemyName.map(name => createCharacter(name)) : [createCharacter(enemyName)];
-  
-  // create a new Item on win
-  const newItem = createItem(itemName);
   
   // get the current room
   const currentRoom = getRoom(roomName);

@@ -496,6 +496,7 @@ const newDiskTemplate = () => ({
               enemy.topics = 'you still want MORE ?';
               enemy.desc = `come at ${enemy.name} again!? with ${player.health} points ?`;
               enemy.turns = 1;
+              
             } else if (result === "game_over") {
               
               player.alive = false;
@@ -511,14 +512,14 @@ const newDiskTemplate = () => ({
       ],
     },
     {
-      name: ['creatures', 'creature'],
+      name: 'creatures',
       roomId: 'large hall',
       health: 100,
       turns: 2,
       beaten: false,
       desc: [
-        'the first CREATURE hisses, Who dares enter our domain?',
-        'CREATURE two whispers, Hmmmmm it is a surface dweller. Interesting.'
+        'the first of the CREATURES hisses, Who dares enter our domain?',
+        'the 2nd of the CREATURES two whispers, Hmmmmm it is a surface dweller. Interesting.'
       ],
       onTalk: () => println('what is your business here, human ?'),
       topics: [
@@ -530,7 +531,7 @@ const newDiskTemplate = () => ({
              
              const creature = getCharacter('creatures');
              
-             println(`you speak in riddles, human says CREATURE ONE`);
+             println(`you speak in riddles, human says one of the CREATURES`);
              println('here is your FROG, human...');
              
              createNewItem('reptile',
@@ -554,9 +555,14 @@ const newDiskTemplate = () => ({
                },
                {
                  option: 'you WONT',
-                 line: 'we already have ',
- //                onSelected() {
-//               }
+                 line: 'we already have ',             
+                 onSelected() {
+                   
+                   // initialize the game
+                   initializeGame('player', 'creatures', 'large hall');
+                   
+                 }
+               },
              ];
            }
         },
