@@ -55,12 +55,22 @@ const newDiskTemplate = () => ({
            
             const room = getRoom('start');
             const exit = getExit('north', room.exits);
+            const child = getCharacter('child');
 
             if (exit.block) {
+              
               delete exit.block;
+              
               println(`You cut through the vines, unblocking the DOOR to the NORTH.`);
+              
               getItem('axe').desc = `You USED it to cut the VINES, unblocking the DOOR.`;
+              
+              child.topics[2].line = `thank you, sir... you look into the CHILD his watery eyes, Ugh now you have to at least take a look. how bad can it be ?`;
+              child.topics[0].option = `where did your FROG go, KID ?`;
+              child.topics[0].line = `wow you opened the DOOR !!!, I saw it going into a small SHED through the keyhole of the DOOR`;
+              
             } else {
+              
               println(`There is nothing to use the axe on.`);
             }
           },
@@ -116,11 +126,11 @@ const newDiskTemplate = () => ({
       ],
       exits: [
         {
-          dir: 'south',
+          dir: ['south', 'back'],
           id: 'start',
         },
         {
-          dir: 'east',
+          dir: ['east', 'shed'],
           id: 'shed',
         },
       ],
@@ -152,19 +162,30 @@ const newDiskTemplate = () => ({
             if (getItem('flashlight')) {
               
               // set flag for later use
-              if (flashlightOn = 0) {
+              if (flashlightOn === 0) {
               
                 // get the cellar room to unblock the exit
                 const room = getRoom('cellar');
                 const exit = getExit('east', room.exits);
+                
+                // update flashlightOn flag
+                flashlightOn = 1;
               
                 if (exit.block) {
                 
                   delete exit.block;
                 
                   room.desc = 'by the dim light of the flashlight you can see a door to the EAST';
+                  
+                  println('the flashlight works with the old battery');
+                  
+                  console.log('used battery on flashlight');
               }
-              println('the flashlight works with the old battery');
+            } else if (flashlightOn === 1) {
+              
+              println('you already did that, there are more important things to do');
+                
+              console.log('used battery on flashlight already');
             }
           } 
         },
@@ -174,11 +195,7 @@ const newDiskTemplate = () => ({
         desc: 'It is a spiral staircase, go SOUTH to use it',
         onUse: () => println('type SOUTH to use the staircase.'),
       },
-      // TEST ITEMS
-      {name: 'item1', imgUrl: 'img/item/battery.png', isTakeable: true,},
-      {name: 'item2', imgUrl: 'img/item/battery.png', isTakeable: true,},
-      {name: 'item3', imgUrl: 'img/item/battery.png', isTakeable: true,},
-      {name: 'item4', imgUrl: 'img/item/battery.png', isTakeable: true,},
+ 
       ],
       exits: [
         {
@@ -359,7 +376,6 @@ const newDiskTemplate = () => ({
               
               println('the DOOR rattles');
             }
-            
           },
         },   
       ],
@@ -407,7 +423,7 @@ const newDiskTemplate = () => ({
     },
     // TUNNEL
     {
-      name: ['joey', 'kangaroo'],
+      name: 'joey',
       roomId: 'tunnel',
       health: 25,
       turns: 4,
@@ -435,6 +451,7 @@ const newDiskTemplate = () => ({
             
               console.log('fight instigated: ' + player.name + ' vs.: ' + enemy.name);
               let result = playGame(player.health, enemy.health, enemy.turns, enemy.name);
+              
               if (result === "won") {
                 
                 const room = getRoom('tunnel');

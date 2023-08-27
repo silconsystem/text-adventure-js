@@ -144,6 +144,8 @@ function playGame(playerHealth, enemyHealth, turns, name) {
   enemy.health = enemyHealth;
   enemy.turns = turns;
   
+  console.log(playerHealth, enemyHealth, turns, name);
+  
   let battle = gameStrings().battle;
   let battleStrings;
   
