@@ -558,10 +558,26 @@ const newDiskTemplate = () => ({
                  line: 'we already have ',             
                  onSelected() {
                    
-                   // initialize the game
-                   initializeGame('player', 'creatures', 'large hall');
+                   const result = initializeGame('player', 'creatures', 'large hall');
                    
-                 }
+                   if (result === "won") {
+                     
+                     creature.topics = [
+                       {
+                         option: 'I BEAT you',
+                         line: 'you sure did',
+                       },
+                     ];
+                   } else if (result === "loss") {
+                     
+                     creature.topics = [
+                       {
+                         option: 'I BEAT you',
+                         line: 'you sure did',
+                       },
+                     ];
+                   }
+                 },
                },
              ];
            }

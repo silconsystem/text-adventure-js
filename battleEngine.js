@@ -59,10 +59,10 @@ function initializeGame(playerName, enemyName, roomName) {
       
       if (result === "won") {
   
-        handleWin(player.name, enemy.name, randomNumber);
+        handleWin(player, enemy, randomNumber);
       } else if (result === "loss") {
   
-        handleLoss(player.name, enemy.name);
+        handleLoss(player, enemy);
       } else if (result === "game_over") {
   
         handleGameOver(player.name);
