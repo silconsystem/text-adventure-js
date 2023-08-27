@@ -51,23 +51,30 @@ const newDiskTemplate = () => ({
           isTakeable: true,
           onUse() {
           
-            const chars = getCharactersInRoom('start');
-            const chr = ('child', chars.name);
-            
-            console.log(chars + " " + chr);
+            console.log(getInput());
            
             const room = getRoom('start');
             const exit = getExit('north', room.exits);
+            const child = getCharacter('child');
 
             if (exit.block) {
+              
               delete exit.block;
+              
               println(`You cut through the vines, unblocking the DOOR to the NORTH.`);
+              
               getItem('axe').desc = `You USED it to cut the VINES, unblocking the DOOR.`;
+              
+              child.topics[2].line = `thank you, sir... you look into the CHILD his watery eyes, Ugh now you have to at least take a look. how bad can it be ?`;
+              child.topics[0].option = `where did your FROG go, KID ?`;
+              child.topics[0].line = `wow you opened the DOOR !!!, I saw it going into a small SHED through the keyhole of the DOOR`;
+              
             } else {
+              
               println(`There is nothing to use the axe on.`);
             }
           },
-        }
+        },
       ],
       exits: [
         {
@@ -119,11 +126,11 @@ const newDiskTemplate = () => ({
       ],
       exits: [
         {
-          dir: 'south',
+          dir: ['south', 'back'],
           id: 'start',
         },
         {
-          dir: 'east',
+          dir: ['east', 'shed'],
           id: 'shed',
         },
       ],
@@ -155,19 +162,30 @@ const newDiskTemplate = () => ({
             if (getItem('flashlight')) {
               
               // set flag for later use
-              if (flashlightOn = 0) {
+              if (flashlightOn === 0) {
               
                 // get the cellar room to unblock the exit
                 const room = getRoom('cellar');
                 const exit = getExit('east', room.exits);
+                
+                // update flashlightOn flag
+                flashlightOn = 1;
               
                 if (exit.block) {
                 
                   delete exit.block;
                 
                   room.desc = 'by the dim light of the flashlight you can see a door to the EAST';
+                  
+                  println('the flashlight works with the old battery');
+                  
+                  console.log('used battery on flashlight');
               }
-              println('the flashlight works with the old battery');
+            } else if (flashlightOn === 1) {
+              
+              println('you already did that, there are more important things to do');
+                
+              console.log('used battery on flashlight already');
             }
           } 
         },
@@ -177,11 +195,7 @@ const newDiskTemplate = () => ({
         desc: 'It is a spiral staircase, go SOUTH to use it',
         onUse: () => println('type SOUTH to use the staircase.'),
       },
-      // TEST ITEMS
-      {name: 'item1', imgUrl: 'img/item/battery.png', isTakeable: true,},
-      {name: 'item2', imgUrl: 'img/item/battery.png', isTakeable: true,},
-      {name: 'item3', imgUrl: 'img/item/battery.png', isTakeable: true,},
-      {name: 'item4', imgUrl: 'img/item/battery.png', isTakeable: true,},
+ 
       ],
       exits: [
         {
@@ -280,25 +294,48 @@ const newDiskTemplate = () => ({
     // LARGE HALL
     {
       id: 'large hall',
-      imgUrl: 'img/room-placeholder.png',
+      imgUrl: 'img/large_hall.png',
       name: 'large hall',
-      desc: `it's a large hall`,
+      desc: `you enters a vast, dimly lit HALL. The ceiling is high, supported by ancient stone pillars. He notices TWO unusual CREATURES standing before him.`,
+      items: [
+        {
+          name: 'reptile',
+          imgUrl: 'img/item/frog.png',
+          desc: `a small reptile it seems, CREATURE TWO has is in his hands`,
+          isTakeable: false,
+        },
+      ],
       exits: [
         {
           dir: 'west',
           id: 'tunnel,'
+        },
+        {
+          dir: ['south', 'down'],
         },
       ],
     },
     // DEATH
     {
       id: 'death',
-      imgUrl: 'img/room-placeholder.png',
+      imgUrl: 'img/game_over.png',
       name: 'death',
-      desc: 'you have died, nothing else to do but LOAD or RESET',
+      desc: 'you have died, nothing else to do but LOAD or REFRESH, there is a big red BUTTON in front on you',
+      items: [
+        {
+          name: ['refresh', 'button'],
+          desc: 'a big red button',
+          onUse: () => window.location.reload(),
+        },
+      ],
     },
     
   ],
+  /**
+   * 
+   *         CHARACTERS 
+   * 
+  **/
   characters: [
     // PLAYER
     {
@@ -310,6 +347,7 @@ const newDiskTemplate = () => ({
     // START ROOM
     {
       name: ['child', 'kid'],
+      alive: true,
       roomId: 'start',
       desc: 'this KID is crying his little face off !!!',
       onTalk: () => println(`can you help me open this door ?`),
@@ -338,7 +376,6 @@ const newDiskTemplate = () => ({
               
               println('the DOOR rattles');
             }
-            
           },
         },   
       ],
@@ -414,6 +451,7 @@ const newDiskTemplate = () => ({
             
               console.log('fight instigated: ' + player.name + ' vs.: ' + enemy.name);
               let result = playGame(player.health, enemy.health, enemy.turns, enemy.name);
+              
               if (result === "won") {
                 
                 const room = getRoom('tunnel');
@@ -466,6 +504,35 @@ const newDiskTemplate = () => ({
             }                         
             console.log(player.health, enemy.health, enemy.turns, enemy.name);          
           },
+        },
+      ],
+    },
+    {
+      name: ['creature one', 'creature two'],
+      roomId: 'large_hall',
+      health: 100,
+      turns: 2,
+      beaten: false,
+      desc: [
+        'creature one hisses, Who dares enter our domain?',
+        'creature two whispers, Hmmmmm it is a surface dweller. Interesting.'
+      ],
+      onTalk: () => println('what is your business here, human ?'),
+      topics: [
+        {
+           option: 'I just wanted to help a kid find his frog !!!',
+           removeOnRead: true,
+           onSelected() {
+             println(`you speak in riddles, human says CREATURE ONE`);
+             println('here is your FROG, human...');
+             
+             createNewItem('reptile',
+                           'frog',
+                           'img/item/frog.png',
+                           `it's the childs frog, you fit it in your pocket`,
+                           true
+                           );
+           }
         },
       ],
     },
