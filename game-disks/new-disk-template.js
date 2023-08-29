@@ -310,10 +310,34 @@ const newDiskTemplate = () => ({
           dir: 'west',
           id: 'tunnel',
         },
-    //    {
-    //      dir: ['south', 'down'],
-    //    },
+        {
+          dir: ['south', 'down'],
+          id: 'ladder',
+          block: true,
+        },
+        {
+          dir: 'north',
+          id: 'alcove',
+          block: true,
+        },
       ],
+    },
+    // A LADDER
+    {
+      id: 'ladder',
+      imgUrl: 'img/ladder.png',
+      name: 'ladder',
+      desc: 'it is a rusty ladder going down...',
+    },
+    // ALCOVE
+    {
+      id: 'alcove',
+      imgUrl: 'img/alcove.png',
+      name: 'alcove',
+      desc: `into a narrower passage. He comes upon a stout wooden door adorned with ancient symbols pulsating with an eerie glow.`,
+    },
+    {
+      
     },
     // DEATH
     {
@@ -558,25 +582,64 @@ const newDiskTemplate = () => ({
                  line: 'we already have ',             
                  onSelected() {
                    
+                   const room = getRoom('large hall');
+                   const exitSouth = getExit('south', room.exits);
+                   const exitNorth = getExit('north', room.exits);
+                   
                    const result = initializeGame('player', 'creatures', 'large hall');
                    
-                   if (result === "won") {
+                   if (result === "won" || result === "loss") {
                      
                      creature.topics = [
                        {
-                         option: 'I BEAT you',
-                         line: 'you sure did',
+                         option: 'you BEAT me',
+                         line: 'I sure did',
+                         removeOnRead: true,
+                         onSelected() {
+                           
+                           println(`we put a tracker on you though, you 're going to help us now. we need you to open the door in the room to the NORTH because we cant go in there...\n
+                           bzzzzz...the smallest one of the CREATURES telepathically says: help usssss...we 'll help you... bzzzzzz`);
+                           
+                           // change dialogue options
+                           creature.topics = [
+                             {
+                               option: 'WHY you human ?',
+                               line: `you came here all curious, and beat our guard.\nyou picked a fight with us too, you're perfect`,
+                             },
+                             {
+                                option: `why we can't open the DOOR ?`,
+                                line: `behind it is an ancient orb we need for our teleports. the human magicians have sealed the orb and imprisoned us...\n
+                                  bzzzz... imprisoned.... hundreds of cycles .....bzzzzb`,
+                             },
+                             {
+                               option: `are we DANGEROUS ?`,
+                               line: `we can be yes, but they sealed us in here and extorted us for information and technologies.\nwe need specific frequencies and gamma rays or we get sick and die !!!`,
+                             },
+                             {
+                                option: `by the way you don't have much TIME`,
+                                line: `these gamma rays will kill you if you stay to long, it is radiation you know...\n
+                                  bzzzzz.... and the humans will come again ....bzzzzb`,
+                                onSelected() {
+                                  
+                                  // start timer
+                                  startTimer();
+                                  
+                                  console.log('timer started');
+                                },
+                             },
+                           ];
+                         },
                        },
                      ];
-                   } else if (result === "loss") {
+                     creature.desc = `they're laughing at you!!`;
                      
-                     creature.topics = [
-                       {
-                         option: 'I BEAT you',
-                         line: 'you sure did',
-                       },
-                     ];
-                   }
+                     delete exitNorth;
+                     delete exitSouth;
+                     
+                     getRoom('large hall').desc = 'the CREATURES are walking around mumbling and you see exits to the NORTH and SOUTH opening up behind them';
+                     
+                     console.log(`result is: ${result}`);
+                   } 
                  },
                },
              ];

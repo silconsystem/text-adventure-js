@@ -1,275 +1,39 @@
-function initializeGame() {
-  const player = createCharacter('player');
-  const enemy = createCharacter('joey');
-  const beerCan = createItem('beercan');
-
-  let randomNumber = generateRandomNumber(1, 10);
-
-  if (!enemy.beaten) {
-    console.log('Fight instigated: ' + player.name + ' vs.: ' + enemy.name);
-    let result = playGame(player, enemy, randomNumber);
-
-    if (result === "won") {
-      handleWin(player, enemy, beerCan, randomNumber);
-    } else if (result === "loss") {
-      handleLoss(player, enemy);
-    } else if (result === "game_over") {
-      handleGameOver(player);
-    }
-  }
-
-  console.log(player.health, enemy.health, enemy.turns, enemy.name);
-}
-
-function createCharacter(name) {
-  return {
-    name: name,
-    health: 100,
-    beaten: false,
-    alive: true,
-    turns: 3, // or any initial value
-    topics: []
-    // Add more properties as needed
-  };
-}
-
-function createItem(name) {
-  return {
-    name: name,
-    desc: `it's a fresh cold ${name.toUpperCase()}.`,
-    isTakeable: true
-    // Add more properties as needed
-  };
-}
-
-function generateRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function playGame(player, enemy, randomNumber) {
-  // Implement your game logic here and return "won", "loss", or "game_over" accordingly.
-}
-
-function handleWin(player, enemy, item, bonus) {
-  player.health += bonus;
-  item.desc = `it's a fresh cold ${item.name.toUpperCase()}.`;
-  item.isTakeable = true;
-
-  console.log(`You beat ${enemy.name}, you got ${bonus} bonus, your health is: ${player.health}.`);
-
-  // Add more actions as needed on win
-}
-
-function handleLoss(player, enemy) {
-  enemy.topics = 'You still want MORE?';
-  enemy.desc = `Come at ${enemy.name} again with ${player.health} points?`;
-  enemy.turns = 1;
-
-  // Add more actions as needed on loss
-}
-
-function handleGameOver(player) {
-  player.alive = false;
-  console.log(`Game over, better LOAD or you're stuck here!`);
-
-  // Add more actions as needed on game over
-}
-
-// You can call initializeGame() to start the game.
-initializeGame();
-
-
-
-
-// Define an object to store strings for different parts of the game.
-const gameStrings = {
-  roomStrings: {
-    cellar: {
-      intro: [
-        "You find yourself in a dark and musty cellar...",
-        "The air in the cellar is damp and chilly...",
-        // Add more intro strings for the cellar
-      ],
-      // Add more room-specific strings as needed
-    },
-    // Add strings for other rooms here
-  },
-  enemyStrings: {
-    joey: {
-      name: "Joey",
-      intro: [
-        "Joey, a mischievous child, stands before you...",
-        "Joey smirks and challenges you to a duel...",
-        // Add more intro strings for Joey
-      ],
-      // Add more enemy-specific strings as needed
-    },
-    // Add strings for other enemies here
-  },
-  // Add more string categories as needed
-};
-
-// Function to get a random string from an array of strings
-function getRandomString(stringArray) {
-  const randomIndex = Math.floor(Math.random() * stringArray.length);
-  return stringArray[randomIndex];
-}
-
-function initializeGame(playerName, enemyNames, itemName, roomName) {
-  const player = createCharacter(playerName);
-  const enemies = Array.isArray(enemyNames) ? enemyNames.map(name => createCharacter(name)) : [createCharacter(enemyNames)];
-  const item = createItem(itemName);
-  const currentRoomStrings = gameStrings.roomStrings[roomName];
-
-  console.log(getRandomString(currentRoomStrings.intro)); // Print a random room-specific intro
-
-  let randomNumber = generateRandomNumber(1, 10);
-
-  for (const enemy of enemies) {
-    const enemyStrings = gameStrings.enemyStrings[enemy.name];
-    if (!enemy.beaten) {
-      console.log('Fight instigated: ' + player.name + ' vs.: ' + enemyStrings.name);
-      let result = playGame(player, enemy, randomNumber);
-
-      if (result === "won") {
-        handleWin(player, enemy, item, randomNumber, getRandomString(enemyStrings.intro));
-      } else if (result === "loss") {
-        handleLoss(player, enemy, getRandomString(enemyStrings.intro));
-      } else if (result === "game_over") {
-        handleGameOver(player);
-      }
-    }
-  }
-
-  console.log(player.health, currentRoomStrings.name);
-}
-
-// ... rest of your code
-
-
-
-// Sample player object
-const player = {
-  name: "John Doe",
-  health: 100,
-  level: 1,
-  // ... other properties
-};
-
-// Sample item object
-const item = {
-  name: "Sword",
-  damage: 10,
-  weight: 5,
-  // ... other properties
-};
-
-// Sample room object
-const room = {
-  name: "Living Room",
-  description: "A cozy living room with a fireplace.",
-  // ... other properties
-};
-
-// Function to set values in different objects based on type, name, and key
-function setObjectValue(type, name, key, value) {
-  if (type === "character") {
-    const character = getCharacter(name);
-    if (character) {
-      character[key] = value;
-      console.log(`Updated ${name}'s ${key} to: ${value}`);
-    } else {
-      console.log(`Character ${name} not found.`);
-    }
-  } else if (type === "item") {
-    const item = getItem(name);
-    if (item) {
-      item[key] = value;
-      console.log(`Updated ${name}'s ${key} to: ${value}`);
-    } else {
-      console.log(`Item ${name} not found.`);
-    }
-  } else if (type === "room") {
-    const room = getRoom(name);
-    if (room) {
-      room[key] = value;
-      console.log(`Updated ${name}'s ${key} to: ${value}`);
-    } else {
-      console.log(`Room ${name} not found.`);
-    }
-  } else {
-    console.log(`Invalid type: ${type}`);
-  }
-}
-
-// Example usage:
-setObjectValue("character", "John Doe", "health", 150);
-setObjectValue("item", "Sword", "damage", 15);
-setObjectValue("room", "Living Room", "description", "A comfortable living space.");
-
-
+https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Styled Prompt</title>
-    <style>
-        /* Style for the overlay background */
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1;
-        }
-
-        /* Style for the prompt container */
-        #prompt-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            padding: 20px;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 2;
-        }
-    </style>
+    <title>Sound Player</title>
 </head>
 <body>
-    <button id="showPrompt">Show Prompt</button>
+    <input type="range" min="20" max="2000" value="440" id="frequencySlider">
+    <button onclick="playSound()">Play</button>
 
-    <!-- Overlay and Prompt Container -->
-    <div id="overlay"></div>
-    <div id="prompt-container">
-        <label for="custom-input">Enter your name:</label>
-        <input type="text" id="custom-input">
-        <button id="custom-submit">Submit</button>
-    </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.24/Tone.js"></script>
     <script>
-        const showPromptButton = document.getElementById("showPrompt");
-        const overlay = document.getElementById("overlay");
-        const promptContainer = document.getElementById("prompt-container");
-        const customInput = document.getElementById("custom-input");
-        const customSubmit = document.getElementById("custom-submit");
+        // Initialize Tone.js
+        Tone.start();
 
-        showPromptButton.addEventListener("click", () => {
-            overlay.style.display = "block";
-            promptContainer.style.display = "block";
+        // Create a synth
+        const synth = new Tone.Synth().toDestination();
 
-            customSubmit.addEventListener("click", () => {
-                const userName = customInput.value;
-                alert("Hello, " + userName + "!");
-                overlay.style.display = "none";
-                promptContainer.style.display = "none";
-            });
-        });
+        function soundPlayer(input, playSample) {
+            if (playSample) {
+                // Play a sample
+                const player = new Tone.Player(input).toDestination();
+                player.start();
+            } else {
+                // Play a frequency
+                synth.triggerAttackRelease(input, 1); // Play for 1 second
+            }
+        }
+
+        function playSound() {
+            const slider = document.getElementById('frequencySlider');
+            const frequency = parseFloat(slider.value);
+
+            soundPlayer(frequency, false); // Play a synth with the specified frequency
+        }
     </script>
 </body>
 </html>

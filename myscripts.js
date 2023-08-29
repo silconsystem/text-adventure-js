@@ -5,7 +5,6 @@
     for graphics and other gameplay mechanics
     
 **/
-console.log('loaded myscripts.js');
 
 // reference the image display element
 let roomImageElement = document.querySelector('#image');
@@ -297,15 +296,19 @@ function updateHealthBar() {
     if (player.health <= 25) {
     
       healthBar.style.backgroundColor = 'red';
+      healthBar.style.color = 'yellow';
     }else if (player.health <= 50) {
     
-      healthBar.style.backgroundColor = 'orange';      
+      healthBar.style.backgroundColor = 'orange';
+      healthBar.style.color = 'lightgreen';
     } else if (player.health <= 75) {
 
-      healthBar.style.backgroundColor = 'yellow';      
+      healthBar.style.backgroundColor = 'yellow';
+      healthBar.style.color = 'red';
     } else {
       
       healthBar.style.backgroundColor = 'green';
+      healthBar.style.color = 'orange';
     }
  
     healthBar.style.width = `${player.health}%`;

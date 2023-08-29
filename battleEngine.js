@@ -29,11 +29,23 @@ function handleLoss(player, enemy) {
 
 function handleGameOver(player) {
   
-  player.alive = false;
+  if (player) {
+  
+    player.alive = false;
               
-  println(`game over, better LOAD or you're stuck here !`);
-              
-  enterRoom('death');
+    println(`game over, better LOAD or you're stuck here !`);
+    
+    setTimeout(function() {
+      enterRoom('death');
+    }, 3000);
+  } else {
+    
+    println(`game over, better LOAD or you're stuck here !`);
+    
+    setTimeout(function() {
+      enterRoom('death');
+    }, 3000);
+  }
   console.log('game over');
 }
 
@@ -73,5 +85,58 @@ function initializeGame(playerName, enemyName, roomName) {
   
   return result;
 }
+
+// clock/ timer function
+let countdown;
+let timerDisplay;
+
+function startTimer() {
+            
+  if (!timerDisplay) {
+                
+  // Create the timer div if it doesn't exist
+    timerDisplay = document.createElement('div');
+    timerDisplay.id = 'timer'; // Set the id attribute
+    document.body.appendChild(timerDisplay);
+  }
+
+  const endTime = new Date().getTime() + 30 * 60 * 1000; // 30 minutes from now
+
+  countdown = setInterval(function() {
+    const currentTime = new Date().getTime();
+    const timeLeft = endTime - currentTime;
+
+    if (timeLeft <= 0) {
+        clearInterval(countdown);
+        handleGameOver();
+    } else {
+        displayTime(timeLeft);
+    }
+  }, 1000); // Update every second
+}
+
+function displayTime(time) {
+  const minutes = Math.floor(time / 60000);
+  const seconds = Math.floor((time % 60000) / 1000);
+
+  timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          
+}
+
+function handleTimeOver() {
+  
+  timerDisplay.textContent = "Time's up!";
+ 
+  println(`time is up !!!!`);
+  
+  console.log('time up');
+  
+  setTimeout(function() {
+    
+    handleGameOver();
+  }, 3000);
+}
+
+
 
 console.log('battleEngine.js loaded ');
