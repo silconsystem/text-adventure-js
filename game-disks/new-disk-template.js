@@ -8,6 +8,16 @@ const newDiskTemplate = () => ({
       imgUrl: 'img/first-room.jpg',
       name: 'The First Room',
       desc: `There's a DOOR to the NORTH, but it is overgrown with VINES. Type ITEMS to see a list of items in the room.`,
+      onLook() {
+        
+        // play a sound
+        const pl = new Tone.Player({
+          url: 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3',
+          autostart: true,
+        }).toDestination();
+        
+        pl.start();
+      },
       items: [
         {
           name: 'nametag',

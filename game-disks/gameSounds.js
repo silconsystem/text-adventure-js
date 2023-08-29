@@ -16,17 +16,35 @@ const synth = new Tone.Synth({
   }
 }).toDestination();
 
-function soundPlayer(input, playSample) {
+function soundPlayer(playSample) {
+  
+  console.log(`url: ${playSample}`);
   
   if (playSample) {
     // Play a sample
-    const player = new Tone.Player(input).toDestination();
-    player.start();
-  } else {
+    const player = new Tone.Player({
+      url: "sounds/crackling.wav",
+      loop: false,
+      autostart: true,
+    }).toDestination();
+    
+    Tone.loaded().then(() => {
+      player.start();
+    });
+   
+    
+    console.log(`played sample from url: ${playSample}`);
+  } /**else if (!playSample && freq !== null) {
     
     // Play a frequency
-    synth.triggerAttackRelease(input, 1); // Play for 1 second
-  }
+    synth.triggerAttackRelease(freq, 1); // Play for 1 second
+    
+    console.log(`played frequency: ${freq}`);
+  } else {
+    
+    console.error(`input: -- ${playSample} -- is not valid\n
+                  freq: -- ${freq} -- is not valid`);
+  }**/
 }
 
 function playSound() {
@@ -34,7 +52,7 @@ function playSound() {
   const slider = document.getElementById('frequencySlider');
   const frequency = parseFloat(slider.value);
 
-  soundPlayer(frequency, false); // Play a synth with the specified frequency
+  soundPlayer(false, frequency); // Play a synth with the specified frequency
 }
 
 // samples
@@ -91,4 +109,6 @@ const gameSounds = () => ({
 });
 
 // check if page loaded
+console.log(gameSounds().roomSounds[0].sndUrl);
+
 console.log('loaded gameSounds.js');
