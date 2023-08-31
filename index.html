@@ -19,6 +19,16 @@
       </head>
       
     <body>
+      
+  <div id="frequency-device">
+    <canvas id="canvas" width="150" height="150"></canvas>
+    <div id="step-display">Step: 1</div>
+    <div class="button-container">
+      <button id="switch-one" class="device-button" onsubmit="frequencySwitch()">440</button>
+      <button id="switch-two" class="device-button" onsubmit="frequencySwitch()">432</button>
+    </div>
+    
+  </div>
 
 <!-- Game content -->
 <div id="graphics"
@@ -55,7 +65,8 @@
   <span><blink>OkayBenji Text Adventure engine ++++ always look for items and characters, type: items and chars ++++ type: help for instructions ++++ be sure to type: look if there's any changes ++++ </blink></span>
      </marquee>
 </div>
-
+  
+ 
 <!-- Player input -->
 <div class="input">
   <span class="ml-2">> </span><input id="input" autofocus spellcheck="false">
@@ -65,6 +76,7 @@
 <link id="styles" rel="stylesheet" type="text/css" href="styles/retro.css">
 
 <!-- Google Fonts -->
+
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&family=Work+Sans&display=swap" rel="stylesheet">
 
 <!-- load external libraries -->
@@ -81,9 +93,12 @@
 <!-- load my custom scripts -->
 <script src="myscripts.js"></script>
 <script src="battleEngine.js"></script>
-
-<!-- Include game engine -->
 <script src="index.js"></script>
+
+    
+<button onclick="toggleFrequencyDevice()">Toggle Container</button>
+<button onclick="playSynth()">play synth</button>
+
 
 <!-- Load disk into engine -->
 <script>loadDisk(newDiskTemplate);</script>

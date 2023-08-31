@@ -10,15 +10,46 @@ const newDiskTemplate = () => ({
       desc: `There's a DOOR to the NORTH, but it is overgrown with VINES. Type ITEMS to see a list of items in the room.`,
       onLook() {
         
-        // play a sound
-        const pl = new Tone.Player({
-          url: 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3',
-          autostart: true,
-        }).toDestination();
-        
-        pl.start();
+       //playAudio(gameSounds().battleSounds[0].sndUrl);
+       //soundPlayer(gameSounds().battleSounds[0].sndUrl);
+       soundPlayer(440);
+       
+
       },
       items: [
+        /** 
+        
+                FREQUENCY DEVICE TESTING: MOVE TO LARGE HALL PUZZLE
+        
+        **/
+        {
+          name: 'device',
+          desc: `the DEVICE the CREATURES gave you is a small thin rectangle with strange text on it...\nwhen you touch it a weird arrow appears that emits sounds when you rotate it.\nthere are values changing when you turn the dial.`,
+          isTakeable: true,
+          onUse() {
+              
+              // open device
+              toggleFrequencyDevice();
+          },
+        },
+        {
+          name: 'green chip',
+          imgUrl: 'img/item/green-circuit.png',
+          desc: `its a GREEN CHIP, a small computer circuit of sorts`,
+          isTakeable: true,
+          onUse() {
+            
+            // check if you have the device 
+            if (getItem('device')) {
+              
+              println(`there is a slot opening when you hold the GREEN CHIP close to the device, you put it in and the device buzzes...`);
+            }
+          },
+        },
+        /**
+         * 
+         * 
+         */
         {
           name: 'nametag',
           imgUrl: 'img/item/nametag.png',
