@@ -12,7 +12,7 @@ Tone.start();
 const mixolydianIntervals = [1, 2, 2, 1, 2, 2];
 const naturalMinorScale = [2, 1, 2, 2, 1, 2];
 const dorianScale = [2, 1, 2, 2, 2, 1];
-const phrygianScale = [1, 2, 2, 2, 1, 2];
+const phrygianScale = [1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2];
 const aeolianScalePureMinor = [2, 1, 2, 2, 1, 2];
 const doubleHarmonicIntervals = [1, 2, 3, 1, 2, 3];
 
@@ -25,6 +25,9 @@ let baseScale = mixolydianIntervals;
 
 // synth frequency
 const synth = new Tone.Synth({
+  oscillator: {
+     type: 'square'
+  },
   envelope: {
     attack: 0.1,
     decay: 0.3,
@@ -103,35 +106,65 @@ function noteArray(refFrequency, scaleIntervals) {
  *         POTENTIOMETER SCRIPT
  * 
  **/
-function playValue(freq, step) {
-  
-  const noteValues = noteArray(freq, baseScale);
-  let rawFreq = noteValues[rotationStep];
-  let currentFreq = rawFreq.frequency;
-  
-  console.log(`106 :: function playValue\nnote values: ${noteValues}\nraw frequency: ${rawFreq}\ncurrent frequency: ${currentFreq}`);
-  
-  synth.triggerAttackRelease(currentFreq, 1);
-  
-  console.log(`frequency is: ${baseFrequency}\nstep value: ${rotationStep}\nfrequency value: ${currentFreq}`);
-}
- 
 const freqOne = document.getElementById('switch-one');
 const freqTwo = document.getElementById('switch-two');
+const octaveC1A440 = [
+    33, // C1
+    35, // C#1 / Db1
+    37, // D1
+    39, // D#1 / Eb1
+    41, // E1
+    44, // F1
+    46, // F#1 / Gb1
+    49, // G1
+    52, // G#1 / Ab1
+    55, // A1
+    58, // A#1 / Bb1
+    62  // B1
+];
+const octaveC1A432 = [
+    32, // C1
+    34, // C#1 / Db1
+    36, // D1
+    38, // D#1 / Eb1
+    40, // E1
+    43, // F1
+    45, // F#1 / Gb1
+    48, // G1
+    51, // G#1 / Ab1
+    54, // A1
+    57, // A#1 / Bb1
+    61  // B1
+];
+// play notes from the array with given input
+function playDeviceValues(hzVal, step) {
+  
+  // set up the frequency corresponding with the step value 
+ let freqToPlay;
+  
+  if (hzVal === 440)  {
+    freqToPlay = octaveC1A440[step];
+  } else if (hzVal === 432) {
+    freqToPlay = octaveC1A432[step];
+  }
+  
+  synth.triggerAttackRelease(freqToPlay, 1);
+  console.log(freqToPlay, step);
+}
 
+// event handles
 freqOne.addEventListener('click', function() {
   
-  // play sound
-  baseFrequency = 440;
-  let stepVal = updateStepDisplay();
-  console.log(`base frequency: ${baseFrequency}\nstep value: ${stepVal}`);
+  playDeviceValues(440, rotationStep);
   
-  playValue(baseFrequency);
+  console.log(`clicked 440 hz button\n${rotationStep}`);
 });
-  
+
 freqTwo.addEventListener('click', function() {
-  baseFrequency = 432;
-  playValue(baseFrequency);
+  
+  playDeviceValues(432, rotationStep);
+  
+  console.log('clicked 432 hz button');
 });
 
 // draw a canvas
@@ -140,7 +173,6 @@ const ctx = canvas.getContext("2d");
 const stepDisplay = document.getElementById("step-display");
 const frequencyDevice = document.getElementById("frequency-device");
 
-const triangleSize = 50; // Size of the triangle
 let rotationStep = 1;
 let isDeviceVisible = false;
 let isDragging = false;
@@ -190,8 +222,10 @@ function limitDraggableArea() {
   }
 }
 
+let rotationAngle = 1;
+const stepAngle = (Math.PI * 2) / 12;
 // draw our triangle shape 
-function drawTriangle(angle) {
+function drawTriangle() {
 
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
@@ -199,7 +233,8 @@ function drawTriangle(angle) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
   ctx.translate(centerX, centerY);
-  ctx.rotate(angle);
+  //ctx.rotate(angle);
+  ctx.rotate(rotationAngle);
 
   const image = new Image();
   image.src = "img/alien-angle.jpg";
@@ -215,24 +250,42 @@ function drawTriangle(angle) {
 function updateStepDisplay() {
   
   stepDisplay.textContent = `Step: ${rotationStep}`;
-  
-  return rotationStep;
 }
-
+/**
 function rotateTriangle(event) {
   const step = event.type === "mousemove" || event.type === "touchmove" ? 1 : 2;
   rotationStep += step;
   if (rotationStep > 12) {
     rotationStep = 1;
   }
-  const angle = (rotationStep - 1) * (Math.PI / 6);
+  const angle = (Math.PI * 2) / 12;
+  //const rect = canvas.getBoundingClientRect();
+  //offsetX = event.clientX - rect.left;
+  //offsetY = event.clientY - rect.top;
+ 
+  //const angle = Math.atan2(offsetX - canvas.height / 2, offsetY - canvas.width / 2);
   drawTriangle(angle);
   updateStepDisplay();
 }
+**/
 
-canvas.addEventListener("mousemove", rotateTriangle);
-canvas.addEventListener("touchstart", rotateTriangle);
-canvas.addEventListener("touchmove", rotateTriangle);
+//canvas.addEventListener("mousemove", rotateTriangle);
+//canvas.addEventListener("touchstart", rotateTriangle);
+//canvas.addEventListener("touchmove", rotateTriangle);
+canvas.addEventListener("click", () => {
+  rotationStep += 1;
+  if (rotationStep >= 12) {
+    rotationStep = 1;
+  }
+  
+  rotationAngle += stepAngle;
+  if (rotationAngle >= Math.PI * 2)  {
+    rotationAngle = 0;
+  }
+  
+  console.log(`rotation angle: ${rotationAngle}\nstep angle: ${stepAngle}\nrotation step: ${rotationStep}`);
+  drawTriangle();
+});
 
 function toggleFrequencyDevice() {
   isDeviceVisible = !isDeviceVisible;
