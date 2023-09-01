@@ -8,25 +8,48 @@ Tone.start();
 
 // globals
 
-// Define the scale intervals
-const mixolydianIntervals = [1, 2, 2, 1, 2, 2];
-const naturalMinorScale = [2, 1, 2, 2, 1, 2];
-const dorianScale = [2, 1, 2, 2, 2, 1];
-const phrygianScale = [1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2];
-const aeolianScalePureMinor = [2, 1, 2, 2, 1, 2];
-const doubleHarmonicIntervals = [1, 2, 3, 1, 2, 3];
 
-const doubleHarmonicFrequencies = noteArray(432, doubleHarmonicIntervals);
-const mixolydianFrequencies = noteArray(432, mixolydianIntervals);
+// Define the scale intervals
+const mixolydianIntervals = [1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2];
+const naturalMinorScale = [2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2];
+const dorianScale = [2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 1];
+const phrygianScale = [1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2];
+const aeolianScalePureMinor = [2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2];
 
 // base frequency :: default 440
 let baseFrequency = 440;
-let baseScale = mixolydianIntervals;
+let baseNote = 'A';
+let baseInterval = phrygianScale;
+
+// tone.js volume
+const volume = new Tone.Gain(0.5);
+volume.toDestination();
 
 // synth frequency
 const synth = new Tone.Synth({
   oscillator: {
-     type: 'square'
+     type: 'sine'
+  },
+  envelope: {
+    attack: 0.3,
+    decay: 0.1,
+    sustain: 0.5,
+    release: 1,
+  }
+}).toDestination();
+
+synth.connect(volume);
+/**
+ * 
+ *           PULSELOOP LOGIC   TONE.JS
+ * 
+**/
+let isPlaying = false;
+
+// sine synth 
+const synthSine = new Tone.Synth({
+  oscillator: {
+     type: 'sine',
   },
   envelope: {
     attack: 0.1,
@@ -35,7 +58,35 @@ const synth = new Tone.Synth({
     release: 1,
   }
 }).toDestination();
+// set up loop
+function startPulseLoop() {
+  
+  isPlaying = true;
+  const pulseInterval = Tone.Time("4n");
+  
+  //set interval
+   const pulseLoop = setInterval(() => {
+     if(!isPlaying) {
+       clearInterval(pulseLoop);
+     } else {
+       synthSine.triggerAttackRelease("C2", "8n");
+     }
+   },pulseInterval.toMilliseconds());
+}
 
+// stop loop
+function stopPulseLoop() {
+  isPlaying = false;
+}
+
+  
+  
+
+/**
+ * 
+ *               ********************
+ * 
+**/
 function playAudio(url) {
   const audio = new Audio(url);
 
@@ -85,22 +136,33 @@ function playSound() {
   soundPlayer(false, frequency); // Play a synth with the specified frequency
 }
 
-// creating note arrays, 
-function noteArray(refFrequency, scaleIntervals) {
-  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-  const frequencies = [];
+// create the frequencies based upon tuning, start note and interval
+function noteArray(tuning, startNote, scaleInterval) {
+  const notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 
-  for (const interval of scaleIntervals) {
-    const noteIndex = (interval - 1) % 12; // Adjust for 0-based indexing
-    const note = notes[noteIndex];
-    const ratio = refFrequency / 440; // 440 Hz is the reference for A440
-    const frequency = 440 * Math.pow(2, (noteIndex + 9) / 12) * ratio;
-    frequencies.push({ note, frequency });
+  // Find the index of the starting note in the notes array
+  const startIndex = notes.indexOf(startNote);
+  
+  console.log(`tuning: ${tuning}\nstart note: ${startNote}\ninterval: ${scaleInterval}`);
+
+  if (startIndex === -1) {
+    throw new Error('Invalid starting note');
   }
 
+  // Initialize an array to store the rounded frequencies
+  const frequencies = [];
+
+  let currentIndex = startIndex;
+  for (const interval of scaleInterval) {
+    const noteIndex = currentIndex % notes.length;
+    const frequency = Math.round(tuning * Math.pow(2, noteIndex / 12)); // Round to whole number
+    frequencies.push(frequency);
+    currentIndex += interval;
+  }
+
+  console.log(`126 noteArray function::\nFrequencies: ${frequencies}`);
   return frequencies;
 }
-
 /**
  * 
  *         POTENTIOMETER SCRIPT
@@ -108,61 +170,34 @@ function noteArray(refFrequency, scaleIntervals) {
  **/
 const freqOne = document.getElementById('switch-one');
 const freqTwo = document.getElementById('switch-two');
-const octaveC1A440 = [
-    33, // C1
-    35, // C#1 / Db1
-    37, // D1
-    39, // D#1 / Eb1
-    41, // E1
-    44, // F1
-    46, // F#1 / Gb1
-    49, // G1
-    52, // G#1 / Ab1
-    55, // A1
-    58, // A#1 / Bb1
-    62  // B1
-];
-const octaveC1A432 = [
-    32, // C1
-    34, // C#1 / Db1
-    36, // D1
-    38, // D#1 / Eb1
-    40, // E1
-    43, // F1
-    45, // F#1 / Gb1
-    48, // G1
-    51, // G#1 / Ab1
-    54, // A1
-    57, // A#1 / Bb1
-    61  // B1
-];
+
 // play notes from the array with given input
-function playDeviceValues(hzVal, step) {
+function playDeviceValues(hzVal, note, interval, step) {
   
   // set up the frequency corresponding with the step value 
- let freqToPlay;
-  
-  if (hzVal === 440)  {
-    freqToPlay = octaveC1A440[step];
-  } else if (hzVal === 432) {
-    freqToPlay = octaveC1A432[step];
-  }
+ const freqArray = noteArray(hzVal, note, interval);
+ 
+ let freqToPlay = freqArray[step];
   
   synth.triggerAttackRelease(freqToPlay, 1);
-  console.log(freqToPlay, step);
+  console.log(`150::playDeviceValues function:\nfreqToPlay: ${freqToPlay}\nstep: ${step}`);
 }
 
 // event handles
 freqOne.addEventListener('click', function() {
   
-  playDeviceValues(440, rotationStep);
+  baseFrequency = 440;
+  
+  playDeviceValues(baseFrequency, baseNote, baseInterval, rotationStep);
   
   console.log(`clicked 440 hz button\n${rotationStep}`);
 });
 
 freqTwo.addEventListener('click', function() {
   
-  playDeviceValues(432, rotationStep);
+  baseFrequency = 432;
+  
+  playDeviceValues(baseFrequency, baseNote, baseInterval, rotationStep);
   
   console.log('clicked 432 hz button');
 });
@@ -251,7 +286,7 @@ function updateStepDisplay() {
   
   stepDisplay.textContent = `Step: ${rotationStep}`;
 }
-/**
+
 function rotateTriangle(event) {
   const step = event.type === "mousemove" || event.type === "touchmove" ? 1 : 2;
   rotationStep += step;
@@ -259,19 +294,19 @@ function rotateTriangle(event) {
     rotationStep = 1;
   }
   const angle = (Math.PI * 2) / 12;
-  //const rect = canvas.getBoundingClientRect();
-  //offsetX = event.clientX - rect.left;
-  //offsetY = event.clientY - rect.top;
+  const rect = canvas.getBoundingClientRect();
+  offsetX = event.clientX - rect.left;
+  offsetY = event.clientY - rect.top;
  
   //const angle = Math.atan2(offsetX - canvas.height / 2, offsetY - canvas.width / 2);
   drawTriangle(angle);
   updateStepDisplay();
 }
-**/
 
-//canvas.addEventListener("mousemove", rotateTriangle);
-//canvas.addEventListener("touchstart", rotateTriangle);
-//canvas.addEventListener("touchmove", rotateTriangle);
+
+canvas.addEventListener("mousemove", rotateTriangle);
+canvas.addEventListener("touchstart", rotateTriangle);
+canvas.addEventListener("touchmove", rotateTriangle);
 canvas.addEventListener("click", () => {
   rotationStep += 1;
   if (rotationStep >= 12) {
@@ -294,9 +329,11 @@ function toggleFrequencyDevice() {
   if (isDeviceVisible) {
     setDefaultPosition();
     
+    stopPulseLoop();
     console.log('device is visible');
   } else if (!isDeviceVisible);
-  
+    
+    startPulseLoop();
     console.log('device is not visible');
 }
 
@@ -342,7 +379,11 @@ document.addEventListener("touchend", () => {
 
 drawTriangle(0); // Initial drawing
 updateStepDisplay();
-
+/**
+ * 
+ *           
+ * 
+**/
 // samples
 const gameSounds = () => ({
 
@@ -399,4 +440,4 @@ const gameSounds = () => ({
 // check if page loaded
 console.log(gameSounds().roomSounds[0].sndUrl);
 
-console.log('loaded gameSounds.js');
+console.log('loaded gameSounds.js');console.log('loaded gameSounds.js');
