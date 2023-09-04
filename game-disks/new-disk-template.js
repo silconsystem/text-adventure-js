@@ -9,11 +9,11 @@ const newDiskTemplate = () => ({
       name: 'The First Room',
       desc: `There's a DOOR to the NORTH, but it is overgrown with VINES. Type ITEMS to see a list of items in the room.`,
       onLook() {
-        
-       //playAudio(gameSounds().battleSounds[0].sndUrl);
-       //soundPlayer(gameSounds().battleSounds[0].sndUrl);
-       soundPlayer(440);
-       
+
+        //playAudio(gameSounds().battleSounds[0].sndUrl);
+        //soundPlayer(gameSounds().battleSounds[0].sndUrl);
+        soundPlayer(440);
+
 
       },
       items: [
@@ -24,56 +24,206 @@ const newDiskTemplate = () => ({
         **/
         {
           name: 'device',
+          imgUrl: 'img/item/device.png',
           desc: `the DEVICE the CREATURES gave you is a small thin rectangle with strange text on it...\nwhen you touch it a weird arrow appears that emits sounds when you rotate it.\nthere are values changing when you turn the dial.`,
           isTakeable: true,
           onUse() {
-              
-              // open device
-              toggleFrequencyDevice();
+
+            // open device
+            toggleFrequencyDevice();
           },
         },
-        {
+        { // D or E
           name: 'green chip',
           imgUrl: 'img/item/green-circuit.png',
           desc: `its a GREEN CHIP, a small computer circuit of sorts`,
           isTakeable: true,
           onUse() {
-            
+
             // check if you have the device 
             if (getItem('device')) {
-              
+
               println(`there is a slot opening when you hold the GREEN CHIP close to the device, you put it in and the device buzzes...`);
+
+              baseNote = 'D';
+              baseInterval = dorianScale;
+            }
+          },
+        },
+        { // E or F
+          name: 'blue chip',
+          imgUrl: 'img/item/blue.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device');
+
+              baseNote = 'F';
+              baseInterval = mixolydianIntervals;
+            }
+          },
+        },
+        { // C or D
+          name: 'gray chip',
+          imgUrl: 'img/item/gray.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device');
+
+              baseNote = 'C';
+              baseInterval = phrygianScale;
+            }
+          },
+        },
+        { // C or D
+          name: 'indigo chip',
+          imgUrl: 'img/item/indigo.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device');
+
+              baseNote = 'D#';
+              baseInterval = dorianScale;
+            }
+          },
+        },
+        { // F or G
+          name: 'orange chip',
+          imgUrl: 'img/item/orange.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device');
+
+              baseNote = 'G';
+              baseInterval = dorianScale;
+            }
+          },
+        },
+        { // A or B
+          name: 'violet chip',
+          imgUrl: 'img/item/voilet.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device');
+
+              baseNote = 'A';
+              baseInterval = dorianScale;
+            }
+          },
+        },
+        { // B or C
+          name: 'yellow chip',
+          imgUrl: 'img/item/yellow.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device');
+
+              baseNote = 'B';
+              baseInterval = naturalMinorScale;
+            }
+          },
+        },
+        {
+          name: 'checkered chip',
+          imgUrl: 'img/item/blackwhite.png',
+          desc: '',
+          isTakeable: true,
+          onUse() {
+
+            if (getItem('device')) {
+
+              println('you put the chip in the device, this one seems different');
+
+              baseFrequency = 442;
+              baseNote = 'C#';
+              baseInterval = aeolianScalePureMinor;
             }
           },
         },
         /**
-         * 
-         * 
-         */
+        * 
+        *         LOCK ITEM
+        * 
+        **/
+        {
+          name: 'lock',
+          desc: 'LOCK mechanism',
+          isTakeable: false,
+          onUse() {
+            
+            const unlockFreq = 523;
+            
+            println(`the door mechanism opens with the device if you find the right sonic key, thats what the CREATURES told me\nlets try turning the dail and pressing some buttons !! `);
+
+            if (!isMatchFound) {
+              // Start the background check for a match
+              const checkInterval = setInterval(() => {
+                
+                checkForMatch(unlockFreq);
+                
+                if (isMatchFound) {
+                  clearInterval(checkInterval);
+                  
+                  println(`you successfully unlocked this mechanism`);
+                  
+                  console.log(`194::onUse function, in "lock" item\nsuccessfully matched played frequency: ${currentNoteFrequency} with unlock frequency: ${unlockFreq}`);
+                }
+              }, 100);
+            }
+          },
+         },
+
+        /**
+        * 
+        * 
+        */
         {
           name: 'nametag',
           imgUrl: 'img/item/nametag.png',
           desc: `it's an empty NAMETAG, better put your name on it`,
           isTakeable: true,
           onUse() {
-          
-          // TODO !!! lose prompt() for better alternative 
+
+            // TODO !!! lose prompt() for better alternative 
             let player = getCharacter('player');
             let inputValue = getInput();
-            
+
             if (!inputValue) {
-                            
+
               inputValue = prompt(`type your NAME if you want a NICKNAME`);
               player.nickname = inputValue;
             }
-              
-              println(`${player.nickname} is on your nametag`);
-            
-              
-              let nametag = getItem('nametag');
-              nametag.desc = `a fancy nametag spelling your name: ${player.nickname}`;
-                       
-              console.log(inputValue, player.nickname, nametag.desc);
+
+            println(`${player.nickname} is on your nametag`);
+
+
+            let nametag = getItem('nametag');
+            nametag.desc = `a fancy nametag spelling your name: ${player.nickname}`;
+
+            console.log(inputValue, player.nickname, nametag.desc);
           },
         },
         {
@@ -91,27 +241,27 @@ const newDiskTemplate = () => ({
           desc: `You could probably USE it to cut the VINES, unblocking the DOOR.`,
           isTakeable: true,
           onUse() {
-          
+
             console.log(getInput());
-           
+
             const room = getRoom('start');
             const exit = getExit('north', room.exits);
             const child = getCharacter('child');
 
             if (exit.block) {
-              
+
               delete exit.block;
-              
+
               println(`You cut through the vines, unblocking the DOOR to the NORTH.`);
-              
+
               getItem('axe').desc = `You USED it to cut the VINES, unblocking the DOOR.`;
-              
+
               child.topics[2].line = `thank you, sir... you look into the CHILD his watery eyes, Ugh now you have to at least take a look. how bad can it be ?`;
               child.topics[0].option = `where did your FROG go, KID ?`;
               child.topics[0].line = `wow you opened the DOOR !!!, I saw it going into a small SHED through the keyhole of the DOOR`;
-              
+
             } else {
-              
+
               println(`There is nothing to use the axe on.`);
             }
           },
@@ -140,26 +290,26 @@ const newDiskTemplate = () => ({
           onUse() {
             // check if we have the battery
             if (getItem('battery')) {
-              
+
               // set flag for later use
               flashlightOn = 1;
-              
+
               // get the cellar room to unblock the exit
               const room = getRoom('cellar');
               const exit = getExit('east', room.exits);
-              
+
               if (exit.block) {
-                
+
                 delete exit.block;
-                
+
                 room.desc = 'by the dim light of the flashlight you can see a door to the EAST';
               }
-              
+
               println('with the battery the flashlight works, not well... but it emits a dim light');
-              
-              getItem('flashlight').desc = 'you have a working flashlight'; 
+
+              getItem('flashlight').desc = 'you have a working flashlight';
             } else {
-              
+
               println(`there is no battery, it doesn't work.`);
             }
           },
@@ -183,60 +333,60 @@ const newDiskTemplate = () => ({
       name: 'dilapitated shed',
       desc: `It's a small building that looks like a shed. It has a STAIRCASE going DOWN into a pitch-dark cellar.`,
       items: [
-      {
-        name: 'matchbox',
-        imgUrl: 'img/item/matchbox.png',
-        desc: `It's a matchbox. It has two matches in it... It feels wet...`,
-        isTakeable: true,
-        onUse() {
+        {
+          name: 'matchbox',
+          imgUrl: 'img/item/matchbox.png',
+          desc: `It's a matchbox. It has two matches in it... It feels wet...`,
+          isTakeable: true,
+          onUse() {
             println('you try lighting a match but they are wet and fall apart in your hands.');
             getItem('matchbox').desc = `the matches have become unusable.`;
-        }
+          }
       },
-      {
-        name: 'battery',
-        imgUrl: 'img/item/battery.png',
-        desc: 'A battery, maybe it works.',
-        isTakeable: true,
-        onUse() {
+        {
+          name: 'battery',
+          imgUrl: 'img/item/battery.png',
+          desc: 'A battery, maybe it works.',
+          isTakeable: true,
+          onUse() {
             // check if we have the battery
             if (getItem('flashlight')) {
-              
+
               // set flag for later use
               if (flashlightOn === 0) {
-              
+
                 // get the cellar room to unblock the exit
                 const room = getRoom('cellar');
                 const exit = getExit('east', room.exits);
-                
+
                 // update flashlightOn flag
                 flashlightOn = 1;
-              
+
                 if (exit.block) {
-                
+
                   delete exit.block;
-                
+
                   room.desc = 'by the dim light of the flashlight you can see a door to the EAST';
-                  
+
                   println('the flashlight works with the old battery');
-                  
+
                   console.log('used battery on flashlight');
+                }
+              } else if (flashlightOn === 1) {
+
+                println('you already did that, there are more important things to do');
+
+                console.log('used battery on flashlight already');
               }
-            } else if (flashlightOn === 1) {
-              
-              println('you already did that, there are more important things to do');
-                
-              console.log('used battery on flashlight already');
             }
-          } 
-        },
+          },
       },
-      {
-        name: 'staircase',
-        desc: 'It is a spiral staircase, go SOUTH to use it',
-        onUse: () => println('type SOUTH to use the staircase.'),
+        {
+          name: 'staircase',
+          desc: 'It is a spiral staircase, go SOUTH to use it',
+          onUse: () => println('type SOUTH to use the staircase.'),
       },
- 
+
       ],
       exits: [
         {
@@ -280,28 +430,28 @@ const newDiskTemplate = () => ({
           desc: `you see something behind the KANGAROO, it looks like a BEER can`,
           isTakeable: false,
           onUse() {
-            
+
             const joey = getCharacter('joey');
             const player = getCharacter('player');
             const beerCan = getItem('beercan');
-            
+
             if (joey.beaten === true) {
-            
+
               var randomNumber = Math.ceil(Math.random() * 11) + 9;
-            
+
               println(`the KANGAROO man was holding on to a cold one !!!, you down the BEERCAN...`);
-              
+
               player.health += randomNumber;
-              
+
               println(`you feel a light buzz, and maybe a little more heroic !${randomNumber} health has been rewarded to you !`);
-              
+
               beerCan.desc = `it's an empty beercan.`;
-              
+
             } else {
-              
+
               println(`you'd like that beer, it looks like the KANGAROO just grabbed it fresh and cold...`);
             }
-           
+
           },
         },
         {
@@ -310,10 +460,10 @@ const newDiskTemplate = () => ({
           desc: `there's something there but I have more urgent stuff right now it looks like`,
           isTakeable: false,
           onUse() {
-            
-  
+
+
             const coin = getItem('coin');
-            
+
             if (coin.isTakeable === true) {
               println(`you flip the coin, it landed on ${coinToss()}`);
             }
@@ -378,7 +528,7 @@ const newDiskTemplate = () => ({
       desc: `into a narrower passage. He comes upon a stout wooden door adorned with ancient symbols pulsating with an eerie glow.`,
     },
     {
-      
+
     },
     // DEATH
     {
@@ -394,13 +544,13 @@ const newDiskTemplate = () => ({
         },
       ],
     },
-    
+
   ],
   /**
    * 
    *         CHARACTERS 
    * 
-  **/
+   **/
   characters: [
     // PLAYER
     {
@@ -431,18 +581,18 @@ const newDiskTemplate = () => ({
           onSelected() {
             const room = getRoom('start');
             const exit = getExit('north', room.exits);
-            
+
             if (exit.block) {
-              
+
               delete exit.block;
-              
+
               println(`!!!? the CHILD's tantrum made the VINES recede`);
             } else {
-              
+
               println('the DOOR rattles');
             }
           },
-        },   
+        },
       ],
     },
       // FOREST CLEARING 
@@ -456,9 +606,9 @@ const newDiskTemplate = () => ({
           option: `WHO is there !?`,
           line: 'if you explore the SHED you will surely perish...',
           onSelected() {
-            
+
             const character = getCharacter('noise');
-            
+
             character.desc = 'the NOISE has become a VOICE';
           },
         },
@@ -466,23 +616,23 @@ const newDiskTemplate = () => ({
           option: 'SHOW yourself !!',
           line: 'if you go SOUTH you can still live...',
           onSelected() {
-            
+
             const character = getCharacter('noise');
-            
+
             character.desc = 'the VOICE is freaking you out';
-          },         
+          },
         },
         {
           option: `I'm not AFRAID of you, whoever you are !!`,
           line: `Then at least get something like a FLASHLIGHT, you can't get anywhere without it...`,
           onSelected() {
-            
+
             const character = getCharacter('noise');
-            
+
             character.desc = 'the VOICE has disappeared.';
-            
+
             println('that was weird, maybe lets get ITEMS like a FLASHLIGHT, you never know...');
-          }, 
+          },
         },
       ],
     },
@@ -503,51 +653,51 @@ const newDiskTemplate = () => ({
         {
           option: 'en GARDE !!',
           line: 'prepare to DIE !!!',
-//   TODO!
+          //   TODO!
           onSelected() {
-            
+
             let player = getCharacter('player');
-            let enemy = getCharacter('joey');         
+            let enemy = getCharacter('joey');
             let beerCan = getItem('beercan');
-            
+
             let randomNumber = Math.floor(Math.random() * 10) + 1;
-            
-            if (enemy.beaten === false) { 
-            
+
+            if (enemy.beaten === false) {
+
               console.log('fight instigated: ' + player.name + ' vs.: ' + enemy.name);
               let result = playGame(player.health, enemy.health, enemy.turns, enemy.name);
-              
+
               if (result === "won") {
-                
+
                 const room = getRoom('tunnel');
                 const exit = getExit('east', room.exits);
-                
+
                 player.health += randomNumber;
-                
+
                 beerCan.desc = `it's a fresh cold BEERCAN.`;
                 beerCan.isTakeable = true;
-                    
+
                 println(`you beat ${enemy.name}, you got ${randomNumber} bonus, your health is: ${player.health}.`);
-                
+
                 enemy.desc = `it was just some dude with a kangaroo suit on, scared the life out of me !!! not so tough now, huh !?`;
-                enemy.onTalk = function() {println('it only mumbles gibberish!?')};
-                
+                enemy.onTalk = function() { println('it only mumbles gibberish!?') };
+
                 room.desc = 'the figure scurried off into a corner, what was going on just now?';
-                         
+
                 if (exit.block) {
-                
+
                   displayImageByRoomId('img/tunnel.png');
                   // add item to room on win
                   createNewItem('shimmer',
-                              'coin',
-                              'img/item/coin.png',
-                              'a shiny coin',
-                              true);
-                             
+                    'coin',
+                    'img/item/coin.png',
+                    'a shiny coin',
+                    true);
+
                   delete exit.block;
                 }
-                
- 
+
+
                 enemy.topics = [
                   {
                     option: `what lies AHEAD?`,
@@ -555,23 +705,23 @@ const newDiskTemplate = () => ({
                   },
                 ];
               }
-              
+
             } else if (result === "loss") {
-            
+
               enemy.topics = 'you still want MORE ?';
               enemy.desc = `come at ${enemy.name} again!? with ${player.health} points ?`;
               enemy.turns = 1;
-              
+
             } else if (result === "game_over") {
-              
+
               player.alive = false;
-              
+
               println(`game over, better LOAD or you're stuck here !`);
-              
+
               enterRoom('death');
               console.log('game over');
-            }                         
-            console.log(player.health, enemy.health, enemy.turns, enemy.name);          
+            }
+            console.log(player.health, enemy.health, enemy.turns, enemy.name);
           },
         },
       ],
@@ -589,107 +739,107 @@ const newDiskTemplate = () => ({
       onTalk: () => println('what is your business here, human ?'),
       topics: [
         {
-           option: 'I just wanted to help a KID find his frog !!!',
-           line: 'seems you found it ',
-           removeOnRead: true,
-           onSelected() {
-             
-             const creature = getCharacter('creatures');
-             
-             println(`you speak in riddles, human says one of the CREATURES`);
-             println('here is your FROG, human...');
-             
-             createNewItem('reptile',
-                           'frog',
-                           'img/item/frog.png',
-                           `it's the childs frog, you fit it in your pocket`,
-                           true
-                           );
-                           
-             creature.onTalk = function() {println('we have a use for you !')};
-             creature.topics = [
-               {
-                 option: 'you DONT',
-                 line: 'we do!',
-                 removeOnRead: true,
+          option: 'I just wanted to help a KID find his frog !!!',
+          line: 'seems you found it ',
+          removeOnRead: true,
+          onSelected() {
+
+            const creature = getCharacter('creatures');
+
+            println(`you speak in riddles, human says one of the CREATURES`);
+            println('here is your FROG, human...');
+
+            createNewItem('reptile',
+              'frog',
+              'img/item/frog.png',
+              `it's the childs frog, you fit it in your pocket`,
+              true
+            );
+
+            creature.onTalk = function() { println('we have a use for you !') };
+            creature.topics = [
+              {
+                option: 'you DONT',
+                line: 'we do!',
+                removeOnRead: true,
                },
-               {
-                 option: 'you CANT',
-                 line: 'we shall!',
-                 removeOnRead: true,
+              {
+                option: 'you CANT',
+                line: 'we shall!',
+                removeOnRead: true,
                },
-               {
-                 option: 'you WONT',
-                 line: 'we already have ',             
-                 onSelected() {
-                   
-                   const room = getRoom('large hall');
-                   const exitSouth = getExit('south', room.exits);
-                   const exitNorth = getExit('north', room.exits);
-                   
-                   const result = initializeGame('player', 'creatures', 'large hall');
-                   
-                   if (result === "won" || result === "loss") {
-                     
-                     creature.topics = [
-                       {
-                         option: 'you BEAT me',
-                         line: 'I sure did',
-                         removeOnRead: true,
-                         onSelected() {
-                           
-                           println(`we put a tracker on you though, you 're going to help us now. we need you to open the door in the room to the NORTH because we cant go in there...\n
+              {
+                option: 'you WONT',
+                line: 'we already have ',
+                onSelected() {
+
+                  const room = getRoom('large hall');
+                  const exitSouth = getExit('south', room.exits);
+                  const exitNorth = getExit('north', room.exits);
+
+                  const result = initializeGame('player', 'creatures', 'large hall');
+
+                  if (result === "won" || result === "loss") {
+
+                    creature.topics = [
+                      {
+                        option: 'you BEAT me',
+                        line: 'I sure did',
+                        removeOnRead: true,
+                        onSelected() {
+
+                          println(`we put a tracker on you though, you 're going to help us now. we need you to open the door in the room to the NORTH because we cant go in there...\n
                            bzzzzz...the smallest one of the CREATURES telepathically says: help usssss...we 'll help you... bzzzzzz`);
-                           
-                           // change dialogue options
-                           creature.topics = [
-                             {
-                               option: 'WHY you human ?',
-                               line: `you came here all curious, and beat our guard.\nyou picked a fight with us too, you're perfect`,
+
+                          // change dialogue options
+                          creature.topics = [
+                            {
+                              option: 'WHY you human ?',
+                              line: `you came here all curious, and beat our guard.\nyou picked a fight with us too, you're perfect`,
                              },
-                             {
-                                option: `why we can't open the DOOR ?`,
-                                line: `behind it is an ancient orb we need for our teleports. the human magicians have sealed the orb and imprisoned us...\n
+                            {
+                              option: `why we can't open the DOOR ?`,
+                              line: `behind it is an ancient orb we need for our teleports. the human magicians have sealed the orb and imprisoned us...\n
                                   bzzzz... imprisoned.... hundreds of cycles .....bzzzzb`,
                              },
-                             {
-                               option: `are we DANGEROUS ?`,
-                               line: `we can be yes, but they sealed us in here and extorted us for information and technologies.\nwe need specific frequencies and gamma rays or we get sick and die !!!`,
+                            {
+                              option: `are we DANGEROUS ?`,
+                              line: `we can be yes, but they sealed us in here and extorted us for information and technologies.\nwe need specific frequencies and gamma rays or we get sick and die !!!`,
                              },
-                             {
-                                option: `by the way you don't have much TIME`,
-                                line: `these gamma rays will kill you if you stay to long, it is radiation you know...\n
+                            {
+                              option: `by the way you don't have much TIME`,
+                              line: `these gamma rays will kill you if you stay to long, it is radiation you know...\n
                                   bzzzzz.... and the humans will come again ....bzzzzb`,
-                                onSelected() {
-                                  
-                                  // start timer
-                                  startTimer();
-                                  
-                                  console.log('timer started');
-                                },
+                              onSelected() {
+
+                                // start timer
+                                startTimer();
+
+                                console.log('timer started');
+                              },
                              },
                            ];
-                         },
+                        },
                        },
                      ];
-                     creature.desc = `they're laughing at you!!`;
-                     
-                     delete exitNorth;
-                     delete exitSouth;
-                     
-                     getRoom('large hall').desc = 'the CREATURES are walking around mumbling and you see exits to the NORTH and SOUTH opening up behind them';
-                     
-                     console.log(`result is: ${result}`);
-                   } 
-                 },
+                    creature.desc = `they're laughing at you!!`;
+
+                    delete exitNorth;
+                    delete exitSouth;
+
+                    getRoom('large hall').desc = 'the CREATURES are walking around mumbling and you see exits to the NORTH and SOUTH opening up behind them';
+
+                    console.log(`result is: ${result}`);
+                  }
+                },
                },
              ];
-           }
+          }
         },
         {
           option: 'just STUMBLED in...',
           line: 'is that so',
-          removeOnRead: true, 
+          removeOnRead: true,
         },
       ],
     },

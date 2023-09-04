@@ -6,8 +6,106 @@
 // Initialize Tone.js
 Tone.start();
 
-// globals
+// frequency table
+const frequencyLookUp440Hz = [
+  { note: 'C2', frequency: 65.41 },
+  { note: 'C#2', frequency: 69.30 },
+  { note: 'D2', frequency: 73.42 },
+  { note: 'D#2', frequency: 77.78 },
+  { note: 'E2', frequency: 82.41 },
+  { note: 'F2', frequency: 87.31 },
+  { note: 'F#2', frequency: 92.50 },
+  { note: 'G2', frequency: 98.00 },
+  { note: 'G#2', frequency: 103.83 },
+  { note: 'A2', frequency: 110.00 },
+  { note: 'A#2', frequency: 116.54 },
+  { note: 'B2', frequency: 123.47 },
+  { note: 'C3', frequency: 130.81 },
+  { note: 'C#3', frequency: 138.59 },
+  { note: 'D3', frequency: 146.83 },
+  { note: 'D#3', frequency: 155.56 },
+  { note: 'E3', frequency: 164.81 },
+  { note: 'F3', frequency: 174.61 },
+  { note: 'F#3', frequency: 185.00 },
+  { note: 'G3', frequency: 196.00 },
+  { note: 'G#3', frequency: 207.65 },
+  { note: 'A3', frequency: 220.00 },
+  { note: 'A#3', frequency: 233.08 },
+  { note: 'B3', frequency: 246.94 },
+  { note: 'C4', frequency: 261.63 },
+  { note: 'C#4', frequency: 277.18 },
+  { note: 'D4', frequency: 293.66 },
+  { note: 'D#4', frequency: 311.13 },
+  { note: 'E4', frequency: 329.63 },
+  { note: 'F4', frequency: 349.23 },
+  { note: 'F#4', frequency: 369.99 },
+  { note: 'G4', frequency: 392.00 },
+  { note: 'G#4', frequency: 415.30 },
+  { note: 'A4', frequency: 440.00 },
+  { note: 'A#4', frequency: 466.16 },
+  { note: 'B4', frequency: 493.88 },
+  { note: 'C5', frequency: 523.25 }
+];
+const frequencyLookUp432Hz = [
+  { note: 'C2', frequency: 64.50 },
+  { note: 'C#2', frequency: 68.36 },
+  { note: 'D2', frequency: 72.50 },
+  { note: 'D#2', frequency: 76.82 },
+  { note: 'E2', frequency: 81.41 },
+  { note: 'F2', frequency: 86.27 },
+  { note: 'F#2', frequency: 91.41 },
+  { note: 'G2', frequency: 96.83 },
+  { note: 'G#2', frequency: 102.55 },
+  { note: 'A2', frequency: 108.56 },
+  { note: 'A#2', frequency: 114.89 },
+  { note: 'B2', frequency: 121.54 },
+  { note: 'C3', frequency: 128.50 },
+  { note: 'C#3', frequency: 136.72 },
+  { note: 'D3', frequency: 145.00 },
+  { note: 'D#3', frequency: 153.65 },
+  { note: 'E3', frequency: 162.83 },
+  { note: 'F3', frequency: 172.55 },
+  { note: 'F#3', frequency: 182.83 },
+  { note: 'G3', frequency: 193.67 },
+  { note: 'G#3', frequency: 205.10 },
+  { note: 'A3', frequency: 217.12 },
+  { note: 'A#3', frequency: 229.79 },
+  { note: 'B3', frequency: 243.08 },
+  { note: 'C4', frequency: 256.99 },
+  { note: 'C#4', frequency: 272.49 },
+  { note: 'D4', frequency: 288.99 },
+  { note: 'D#4', frequency: 306.79 },
+  { note: 'E4', frequency: 325.66 },
+  { note: 'F4', frequency: 345.11 },
+  { note: 'F#4', frequency: 365.67 },
+  { note: 'G4', frequency: 387.33 },
+  { note: 'G#4', frequency: 410.21 },
+  { note: 'A4', frequency: 432.00 },
+  { note: 'A#4', frequency: 457.21 },
+  { note: 'B4', frequency: 486.15 },
+  { note: 'C5', frequency: 514.36 }
+];
 
+// lookup function
+function findNoteByFrequency(frequencyValue, tuning) {
+  
+  const referenceArray = tuning === 432 ? frequencyLookUp432Hz :frequencyLookUp440Hz;
+  
+  let closestNote = referenceArray[0];
+  let closestDifference = Math.abs(frequencyValue - closestNote.frequency);
+  
+  for (let i = 1; i < referenceArray.length; i++) {
+    
+    const currentNote = referenceArray[i];
+    const currentDifference = Math.abs(frequencyValue - currentNote.frequency);
+    
+    if (currentDifference < closestDifference) {
+      closestNote = currentNote;
+      closestDifference = currentDifference;
+    }
+  }
+  return closestNote.note;
+}
 
 // Define the scale intervals
 const mixolydianIntervals = [1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2];
@@ -20,15 +118,22 @@ const aeolianScalePureMinor = [2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2];
 let baseFrequency = 440;
 let baseNote = 'A';
 let baseInterval = phrygianScale;
-
+/**
+ *             TODO!!
 // tone.js volume
-const volume = new Tone.Gain(0.5);
-volume.toDestination();
+const synthVolume = new Tone.Gain(0.5);
+synthVolume.toDestination();
+**/
+const feedbackDLY = new Tone.FeedbackDelay("8n", 0.5);
+const pingPong = new Tone.PingPongDelay("2n", 0.2);
+const reverb = new Tone.Reverb(3);
+const autowah = new Tone.AutoWah(80, 6, -10);
+const phaser = new Tone.Phaser(30, 5, 1000);
 
 // synth frequency
-const synth = new Tone.Synth({
+const synth = new Tone.DuoSynth({
   oscillator: {
-     type: 'sine'
+     type: 'sawtooth',
   },
   envelope: {
     attack: 0.3,
@@ -38,7 +143,11 @@ const synth = new Tone.Synth({
   }
 }).toDestination();
 
-synth.connect(volume);
+// attach effects
+synth.connect(phaser);
+phaser.connect(pingPong);
+pingPong.toDestination();
+
 /**
  * 
  *           PULSELOOP LOGIC   TONE.JS
@@ -49,27 +158,51 @@ let isPlaying = false;
 // sine synth 
 const synthSine = new Tone.Synth({
   oscillator: {
-     type: 'sine',
+     type: 'pulse',
   },
   envelope: {
-    attack: 0.1,
-    decay: 0.3,
-    sustain: 0.5,
+    attack: 0.8,
+    decay: 0.1,
+    sustain: 0.3,
     release: 1,
   }
 }).toDestination();
+
+synthSine.connect(feedbackDLY);
+feedbackDLY.connect(reverb);
+reverb.connect(autowah);
+autowah.toDestination();
+
+/**                  
+ *                   TODO!!
+const synthSineVolume = new Tone.Volume(-12).toDestination();
+
+// connect audio volume control for synths
+synth.connect(synthVolume);
+synthSine.connect(synthSineVolume);
+
+// set up slider control
+const volumeSlider = document.getElementById('volumeSlider');
+
+// handle event
+volumeSlider.addEventListener('input', function() {
+  
+  // change gain from slider value
+  synthSine.volume.value = parseFloat(volumeSlider.value);
+});
+**/
 // set up loop
 function startPulseLoop() {
   
   isPlaying = true;
-  const pulseInterval = Tone.Time("4n");
+  const pulseInterval = Tone.Time("1n");
   
   //set interval
    const pulseLoop = setInterval(() => {
      if(!isPlaying) {
        clearInterval(pulseLoop);
      } else {
-       synthSine.triggerAttackRelease("C2", "8n");
+       synthSine.triggerAttackRelease("C2", "2n");
      }
    },pulseInterval.toMilliseconds());
 }
@@ -168,6 +301,10 @@ function noteArray(tuning, startNote, scaleInterval) {
  *         POTENTIOMETER SCRIPT
  * 
  **/
+// current note frequency played
+let currentNoteFrequency = 0;
+
+// 440 or 432 button
 const freqOne = document.getElementById('switch-one');
 const freqTwo = document.getElementById('switch-two');
 
@@ -176,11 +313,33 @@ function playDeviceValues(hzVal, note, interval, step) {
   
   // set up the frequency corresponding with the step value 
  const freqArray = noteArray(hzVal, note, interval);
+ // frequency display
+ const deviceValues = document.getElementById('device-values');
+ const displayFrq = document.getElementById('devFrq');
+ const displayNts = document.getElementById('devNts');
  
  let freqToPlay = freqArray[step];
   
   synth.triggerAttackRelease(freqToPlay, 1);
   console.log(`150::playDeviceValues function:\nfreqToPlay: ${freqToPlay}\nstep: ${step}`);
+  
+  // set current note frequency variable for lookup
+  currentNoteFrequency = freqToPlay;
+  let foundNote = findNoteByFrequency(currentNoteFrequency, baseFrequency);
+  
+  console.log(`210::playDeviceValues function\ncurrent note frequency: ${currentNoteFrequency}`);
+  
+  displayFrq.innerHTML = `<p class="alienFont">${currentNoteFrequency}</p><p class="normalFont"> *** ${currentNoteFrequency}</p>`;
+  displayNts.innerHTML = `<p class="alienFont">${foundNote}</p><p class="normalFont">  ${foundNote}</p>`;
+  
+  deviceValues.style.display = 'block';
+  
+  // set timeout for div to fade in/out
+  setTimeout(() => {
+    deviceValues.style.display = 'none';
+  }, 2000);
+  
+  console.log(findNoteByFrequency(currentNoteFrequency, baseFrequency));
 }
 
 // event handles
@@ -327,14 +486,22 @@ function toggleFrequencyDevice() {
   frequencyDevice.style.display = isDeviceVisible ? "block" : "none";
 
   if (isDeviceVisible) {
+    
+    playAudio('sounds/bleep.wav');
+    
     setDefaultPosition();
     
-    stopPulseLoop();
-    console.log('device is visible');
-  } else if (!isDeviceVisible);
-    
     startPulseLoop();
-    console.log('device is not visible');
+    console.log(`device visible: ${isDeviceVisible}`);
+  }
+  
+  if (!isDeviceVisible) {
+    
+    playAudio('bleep.wav');
+    
+    stopPulseLoop();
+    console.log(`device visible: ${isDeviceVisible}`);
+  }
 }
 
 stepDisplay.addEventListener("mousedown", (e) => {
@@ -379,6 +546,42 @@ document.addEventListener("touchend", () => {
 
 drawTriangle(0); // Initial drawing
 updateStepDisplay();
+/**
+ * 
+ *             FIND LOCK KEY FREQUENCIES
+ * 
+ **/
+ // Create a variable to track whether a match has been found
+ // Create a variable to store the timeout ID
+let isMatchFound = false;
+let matchCheckTimeout;
+
+// Function to simulate getting the global frequency from your instrument (replace this with your actual function)
+function getGlobalFrequency() {
+  
+  const currFreqGlobal = currentNoteFrequency;
+  return currFreqGlobal;
+}
+
+// Function to check for a match
+function checkForMatch(targetFreq) {
+  // Get the current global frequency (you should update this with your instrument)
+  const currFQ = getGlobalFrequency(); // Replace this with your actual function
+
+  // Check if the current frequency matches the desired frequency
+  if (Math.abs(currFQ - targetFreq) < 1) { // Adjust the threshold as needed
+    isMatchFound = true;
+    println('Successful match!'); // Assuming you have a println function
+    clearTimeout(matchCheckTimeout); // Stop checking when a match is found
+  } else {
+    // Continue checking if a match hasn't been found
+    matchCheckTimeout = setTimeout(checkForMatch(targetFreq), 5000); // Adjust the interval as needed
+  }
+}
+
+
+/**
+**/             //****************//
 /**
  * 
  *           
@@ -440,4 +643,4 @@ const gameSounds = () => ({
 // check if page loaded
 console.log(gameSounds().roomSounds[0].sndUrl);
 
-console.log('loaded gameSounds.js');console.log('loaded gameSounds.js');
+console.log('loaded gameSounds.js');
