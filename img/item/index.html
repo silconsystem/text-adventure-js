@@ -1,0 +1,115 @@
+<html lang="en">
+  
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">     
+        
+        <title>text-adventure-js</title>
+        
+        <meta name="description" content="A simple HTML5 Template for new projects.">
+        <meta name="author" content="SitePoint">
+        <meta property="og:title" content="A Basic HTML5 Template">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.sitepoint.com/a-basic-html5-template/">
+        <meta property="og:description" content="A text adventure .">
+        <meta property="og:image" content="image.png">
+        
+       <link rel="icon" href="favicon.jpg">
+        
+      </head>
+      
+    <body>
+      
+  <div id="frequency-device">
+        <div id="range-container">
+    <input type="range" id="volumeSlider" clmin="0" max="1" step="0.01" value="0.5">
+    </div>
+    <canvas id="canvas" width="150" height="150"></canvas>
+    <div id="step-display">Step: 1</div>
+    <div class="button-container">
+      <button id="switch-one" class="device-button" onsubmit="frequencySwitch()">440</button>
+      <button id="switch-two" class="device-button" onsubmit="frequencySwitch()">432</button>
+    </div>
+  </div>
+
+<!-- Game content -->
+<div id="graphics"
+     class="parent">
+  <div id="image"
+       class="child"></div>
+  <div id="inventory"
+       class="child">
+  </div>
+</div><!-- graphics -->
+
+    <div id="inventory-nav"
+           class="inventory-nav-buttons"
+           style="display: none">
+        <button id="button-up"
+                class="inventory-nav-button arrow-up"
+                type="submit">-</button>
+        <button id="button-down"
+                class="inventory-nav-button arrow-down"
+                type="submit">+</button>
+      </div>
+      
+      <div id="healthbar">
+        <div id="healthvalue">100</div>
+      </div>
+
+
+<div id="output"
+     class="scrollable"></div>
+
+<div id="instructions"
+     class="marque">
+     <marquee behavior = "scroll"
+              direction = "left">
+  <span><blink>OkayBenji Text Adventure engine ++++ always look for items and characters, type: items and chars ++++ type: help for instructions ++++ be sure to type: look if there's any changes ++++ </blink></span>
+     </marquee>
+</div>
+      <div id="device-values" class="hidden">
+        <span id="devFrq">000</span>
+         <span id="devNts">0</span>
+      </div>
+ 
+<!-- Player input -->
+<div class="input">
+  <span class="ml-2">> </span><input id="input" autofocus spellcheck="false">
+</div>
+
+<!-- CSS styles -->
+<link id="styles" rel="stylesheet" type="text/css" href="styles/retro.css">
+
+<!-- Google Fonts -->
+
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&family=Work+Sans&display=swap" rel="stylesheet">
+
+<!-- load external libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+
+<!-- load sounds -->
+<script src="game-disks/gameSounds.js"></script>
+
+<!-- Include game data ('disk') -->
+<!--<script src="game-disks/demo-disk.js"></script> -->
+<script src="game-disks/new-disk-template.js"></script>
+<script src="game-disks/gameStrings.js"></script>
+
+<!-- load my custom scripts -->
+<script src="myscripts.js"></script>
+<script src="battleEngine.js"></script>
+<script src="index.js"></script>
+
+    
+<button onclick="toggleFrequencyDevice()">Toggle Container</button>
+<button onclick="startPulseLoop()">play pulse</button>
+<button onclick="stopPulseLoop()">stop pulse</button>
+
+
+<!-- Load disk into engine -->
+<script>loadDisk(newDiskTemplate);</script>
+<script>updateHealthBar();</script>
+
+</body>
+</html>

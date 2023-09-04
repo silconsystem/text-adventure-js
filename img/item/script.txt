@@ -1,0 +1,330 @@
+retro computer text adventure script:
+
+
+we start from large hall room
+---
+
+INT. LARGE HALL - TEXT ADVENTURE
+
+The man enters a vast, dimly lit hall. The ceiling is high, supported by ancient stone pillars. He notices two unusual creatures standing before him.
+
+Creature 1, a strange, lizard-like being, speaks with a hissing voice.
+
+CREATURE 1
+(With curiosity)
+Who dares enter our domain?
+
+Creature 2, resembling a floating orb with multiple eyes, chimes in.
+
+CREATURE 2
+(Analyzing the man)
+Hmm, a surface dweller. Interesting.
+
+The man takes a cautious step forward.
+
+MAN
+(Slightly nervous)
+I've come seeking answers, and perhaps, a way back home.
+
+Creature 1 and Creature 2 exchange glances, then nod in agreement.
+
+CREATURE 1
+(With a cunning smile)
+We may have a proposition for you, surface dweller.
+
+CREATURE 2
+(Excited)
+But first, you must prove your worth.
+
+The man feels a mixture of apprehension and curiosity.
+
+Room 1 - Large Hall
+
+[Exits: North, South, East, West]
+
+The man can interact with:
+
+1. Creature 1
+2. Creature 2
+
+Which way will the man go?
+
+---
+
+The man decides to head North, away from the creatures, and into a narrower passage. He comes upon a stout wooden door adorned with ancient symbols pulsating with an eerie glow.
+
+MAN
+(Muttering to himself)
+This door seems significant. Maybe it hides the answers I seek.
+
+He ponders his options. Should he try to decipher the symbols or seek another way?
+
+Room 2 - Enigmatic Door
+
+[Exits: South]
+
+The man can interact with:
+
+1. Enigmatic Door
+
+What will he do next?
+
+---
+
+The man, intrigued by the symbols on the door, inspects them closely but cannot decipher their meaning. However, he notices a slot at the door's side, as if something should be inserted.
+
+MAN
+(Thinking aloud)
+There must be something that fits into this slot.
+
+With determination, he decides to leave the door for now and heads back south to the large hall.
+
+Room 1 - Large Hall
+
+[Exits: North, South, East, West]
+
+The man stands before the enigmatic creatures once more.
+
+---
+
+The man decides to head South, returning to the large hall where the mysterious creatures await. He contemplates his next move.
+
+Room 1 - Large Hall
+
+[Exits: North, South, East, West]
+
+The man can interact with:
+
+1. Creature 1
+2. Creature 2
+
+What will he do next?
+
+---
+
+The man chooses to explore to the East, intrigued by what might lie in that direction. He moves cautiously down a dimly lit corridor until he arrives at a chamber filled with an eerie, bluish glow.
+
+Room 3 - Glowing Chamber
+
+[Exits: West]
+
+The man can interact with:
+
+1. Glowing Orbs
+
+What does he want to do in this room?
+
+---
+
+The man approaches the glowing orbs, his curiosity getting the better of him. As he gets closer, the orbs suddenly spring to life, swirling and forming a humanoid shape. It's a spectral figure, wisps of light coalescing into a hazy form.
+
+SPECTRAL FIGURE
+(Mysterious)
+Seek the keys to unlock your path, surface dweller.
+
+Before the man can react, the spectral figure dissipates, leaving behind a sense of purpose and a riddle echoing in his mind.
+
+Room 3 - Glowing Chamber
+
+[Exits: West]
+
+The man feels that he's gained insight into his quest. What will he do next?
+
+---
+
+The man retraces his steps to the West, returning to the large hall where the two enigmatic creatures await. He ponders his next move.
+
+Room 1 - Large Hall
+
+[Exits: North, South, East, West]
+
+The man can interact with:
+
+1. Creature 1
+2. Creature 2
+
+What will he do next?
+
+---
+
+The man decides to explore to the West, driven by a sense of curiosity about what lies in that direction. He moves through a dark corridor until he reaches a room filled with a strange, shimmering mist.
+
+Room 4 - Misty Chamber
+
+[Exits: East]
+
+The man can interact with:
+
+1. Shimmering Mist
+
+What will he do in this room?
+
+---
+
+The man cautiously approaches the shimmering mist, extending a hand to touch it. The moment his fingers make contact, the mist begins to swirl and coalesce into a spectral shape, taking on the form of a tall, cloaked figure.
+
+CLOAKED FIGURE
+(Whispers)
+To unlock your path, you must prove your strength.
+
+Before the man can react, the cloaked figure fades away, leaving behind a sense of purpose and a cryptic message echoing in his mind.
+
+Room 4 - Misty Chamber
+
+[Exits: East]
+
+The man feels that he's gained insight into his quest. What will he do next?
+
+---
+
+The man retraces his steps to the East, returning to the large hall where the two enigmatic creatures await. He ponders his next move.
+
+Room 1 - Large Hall
+
+[Exits: North, South, East, West]
+
+The man can interact with:
+
+1. Creature 1
+2. Creature 2
+
+What will he do next?
+
+---
+
+The man decides to explore to the West, driven by a sense of curiosity about what lies in that direction. He moves through a dark corridor until he reaches a room filled with a strange, shimmering mist.
+
+Room 4 - Misty Chamber
+
+[Exits: East]
+
+The man can interact with:
+
+1. Shimmering Mist
+
+What will he do in this room?
+
+---
+
+The man, now filled with a sense of purpose, heads North, back to the enigmatic door adorned with the pulsating symbols.
+
+Room 2 - Enigmatic Door
+
+[Exits: South]
+
+The man can interact with:
+
+1. Enigmatic Door
+
+What will he do next?
+
+---
+
+The man, driven by newfound determination, inserts the object he believes fits into the slot on the door. As he does, the symbols on the door react, shifting and rearranging. The door creaks open, revealing a passage leading further into the underground labyrinth.
+
+Room 5 - Unlocked Passage
+
+[Exits: North]
+
+The man can interact with:
+
+1. Passage
+
+What will he do next?
+
+---
+
+The man steps through the now-opened door and proceeds North, deeper into the underground maze. He arrives in a chamber filled with a soft, ethereal light, and at its center stands a pedestal adorned with an intricately carved key.
+
+KEY
+(Whispers)
+I hold the power to unlock your destiny.
+
+The man takes the key, feeling a surge of purpose.
+
+Room 6 - Chamber of the Key
+
+[Exits: South]
+
+The man can interact with:
+
+1. Key
+
+What will he do next?
+
+---
+
+The man decides to return South, back to the unlocked passage.
+
+Room 5 - Unlocked Passage
+
+[Exits: North]
+
+The man can interact with:
+
+1. Passage
+
+What will he do next?
+
+---
+
+The man heads back South to the enigmatic door with the newfound key in his possession.
+
+Room 2 - Enigmatic Door
+
+[Exits: South]
+
+The man can interact with:
+
+
+PUZZLE PARTZ
+• Yes, there are various occult and esoteric studies that explore the relationship between frequencies, planets, and the Kabbalistic Sephiroth, often tied to the study of the Tarot. One notable system is the "Hermetic Qabalah," which combines elements of Hermeticism, Kabbalah, and Tarot into a unified framework.
+
+In Hermetic Qabalah, each Sephirah on the Tree of Life is associated with specific planets and astrological correspondences. These associations are sometimes extended to musical notes, colors, and frequencies, creating a holistic and symbolic system. Here's a simplified overview:
+
+1. Kether (Crown) - Associated with the Primum Mobile or the Fixed Stars. It may not have a specific musical note but can be associated with higher frequencies or cosmic sounds.
+
+2. Chokmah (Wisdom) - Associated with the Zodiac and the realm of the fixed stars. Frequencies associated with celestial harmony.
+
+3. Binah (Understanding) - Associated with Saturn. Frequencies associated with the slow-moving, contemplative energy of Saturn.
+
+4. Chesed (Mercy) - Associated with Jupiter. Frequencies associated with expansion, growth, and joviality.
+
+5. Geburah (Severity) - Associated with Mars. Frequencies associated with action, conflict, and courage.
+
+6. Tiphereth (Beauty) - Associated with the Sun. Frequencies associated with vitality, illumination, and creativity.
+
+7. Netzach (Eternity) - Associated with Venus. Frequencies associated with harmony, love, and beauty.
+
+8. Hod (Glory) - Associated with Mercury. Frequencies associated with communication, intellect, and quicksilver-like qualities.
+
+9. Yesod (Foundation) - Associated with the Moon. Frequencies associated with intuition, emotions, and the fluctuating tides of life.
+
+10. Malkuth (Kingdom) - Associated with Earth. Frequencies associated with the material realm and grounded energies.
+
+These associations can vary between different Hermetic Qabalistic traditions, and they are often used for meditation, ritual, and divination purposes within these systems. Exploring these correspondences can be a fascinating journey if you're interested in esoteric studies and the interplay of symbolism between planets, frequencies, and the Sephiroth of the Tarot.
+
+ Associating specific musical note frequencies with colors based on the interpretation you provided can be somewhat arbitrary and subjective, as there isn't a direct, universally accepted mapping between the two in traditional Kabbalistic teachings. However, if you'd like to create a loose association for creative or symbolic purposes, you could consider the following approximate note frequencies for each color:
+
+1. White (Kether - Crown) - Perhaps no specific note, as white can represent the unity of all colors.
+
+2. Grey (Chokmah - Wisdom) - A neutral note like C or D.
+
+3. Black (Binah - Understanding) - No specific note, as black often represents absence or mystery.
+
+4. Blue (Chesed - Mercy) - A note like E or F.
+
+5. Red (Geburah - Severity) - A note like G or A.
+
+6. Yellow (Tiphereth - Beauty) - A note like B or C.
+
+7. Green (Netzach - Eternity) - A note like D or E.
+
+8. Orange (Hod - Glory) - A note like F or G.
+
+9. Violet (Yesod - Foundation) - A note like A or B.
+
+10. Indigo (Malkuth - Kingdom) - A note like C or D.
+
+Remember that these associations are highly symbolic and may not have any scientific or musical basis. They are meant for artistic or spiritual exploration rather than any objective measurement of frequencies or colors.
+      //  },

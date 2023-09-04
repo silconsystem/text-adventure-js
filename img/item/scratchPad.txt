@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #frequency-device {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            overflow: hidden;
+            border: 2px solid #000;
+        }
+        #step-display {
+            margin-top: 10px;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div id="frequency-device">
+        <canvas id="canvas" width="150" height="150"></canvas>
+        <div id="step-display">Step: 1</div>
+    </div>
+    
+    <button onclick="toggleFrequencyDevice()">Toggle Frequency Device</button>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const stepDisplay = document.getElementById("step-display");
+        const frequencyDevice = document.getElementById("frequency-device");
+
+        const triangleSize = 50; // Size of the triangle
+        let rotationStep = 1;
+        let isDeviceVisible = false;
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        function setDefaultPosition() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const defaultX = (screenWidth - 150) / 2; // Center horizontally
+            const defaultY = 20; // 20px from the top
+            frequencyDevice.style.left = defaultX + "px";
+            frequencyDevice.style.top = defaultY + "px";
+        }
+        
+        function limitDraggableArea() {
+            const maxWidth = 600;
+            const maxHeight = 300;
+            const currentX = parseFloat(frequencyDevice.style.left);
+            const currentY = parseFloat(frequencyDevice.style.top);
+            
+            if (isNaN(currentX) || isNaN(currentY)) {
+                return;
+            }
+            
+            if (currentX < 0) {
+                frequencyDevice.style.left = "0px";
+            }
+            if (currentX > maxWidth) {
+                frequencyDevice.style.left = maxWidth + "px";
+            }
+            if (currentY < 0) {
+                frequencyDevice.style.top = "0px";
+            }
+            if (currentY > maxHeight) {
+                frequencyDevice.style.top = maxHeight + "px";
+            }
+        }
+
+        function drawTriangle(angle) {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, -triangleSize / 2);
+            ctx.lineTo(-triangleSize / 2, triangleSize / 2);
+            ctx.lineTo(triangleSize / 2, triangleSize / 2);
+            ctx.closePath();
+            ctx.fillStyle = "blue";
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function updateStepDisplay() {
+            stepDisplay.textContent = `Step: ${rotationStep}`;
+        }
+
+        function rotateTriangle(event) {
+            const step = event.type === "mousemove" || event.type === "touchmove" ? 1 : 2;
+            rotationStep += step;
+            if (rotationStep > 12) {
+                rotationStep = 1;
+            }
+            const angle = (rotationStep - 1) * (Math.PI / 6);
+            drawTriangle(angle);
+            updateStepDisplay();
+        }
+
+        canvas.addEventListener("mousemove", rotateTriangle);
+        canvas.addEventListener("touchstart", rotateTriangle);
+        canvas.addEventListener("touchmove", rotateTriangle);
+
+        function toggleFrequencyDevice() {
+            isDeviceVisible = !isDeviceVisible;
+            frequencyDevice.style.display = isDeviceVisible ? "block" : "none";
+            
+            if (isDeviceVisible) {
+                setDefaultPosition();
+            }
+        }
+
+        stepDisplay.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            offsetX = e.clientX - frequencyDevice.getBoundingClientRect().left;
+            offsetY = e.clientY - frequencyDevice.getBoundingClientRect().top;
+        });
+
+        stepDisplay.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            offsetX = e.touches[0].clientX - frequencyDevice.getBoundingClientRect().left;
+            offsetY = e.touches[0].clientY - frequencyDevice.getBoundingClientRect().top;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                let x = e.clientX - offsetX;
+                let y = e.clientY - offsetY;
+                frequencyDevice.style.left = x + "px";
+                frequencyDevice.style.top = y + "px";
+                limitDraggableArea();
+            }
+        });
+
+        document.addEventListener("touchmove", (e) => {
+            if (isDragging) {
+                let x = e.touches[0].clientX - offsetX;
+                let y = e.touches[0].clientY - offsetY;
+                frequencyDevice.style.left = x + "px";
+                frequencyDevice.style.top = y + "px";
+                limitDraggableArea();
+            }
+        });
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+
+        document.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+
+        drawTriangle(0); // Initial drawing
+        updateStepDisplay();
+    </script>
+</body>
+</html>
+
+
+• <!DOCTYPE html>
+<html>
+<head>
+    <title>Tone.js Synth Volume Control</title>
+    <style>
+        /* CSS for the horizontal slider */
+        input[type="range"] {
+            width: 80%; /* Adjust the width as needed */
+            height: 20px;
+            -webkit-appearance: none; /* Remove default styles */
+            appearance: none;
+            background-color: #ccc;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Remove default styles */
+            appearance: none;
+            width: 20px; /* Adjust the thumb width */
+            height: 20px; /* Adjust the thumb height */
+            background-color: #007BFF;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Optional: Add some spacing and styling to the button */
+        button {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Volume Control</h1>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <br>
+    <button id="playButton">Play Sound</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.35/Tone.js"></script>
+    <script>
+        // Create a synth and connect it to the master output
+        const synth = new Tone.Synth().toMaster();
+
+        // Get the volume slider element
+        const volumeSlider = document.getElementById('volumeSlider');
+
+        // Get the play button element
+        const playButton = document.getElementById('playButton');
+
+        // Add an event listener to the slider
+        volumeSlider.addEventListener('input', function() {
+            // Update the synth volume based on the slider value
+            synth.volume.value = parseFloat(volumeSlider.value);
+        });
+
+        // Add an event listener to the play button
+        playButton.addEventListener('click', function() {
+            // Trigger a note with the synth when the button is clicked
+            synth.triggerAttackRelease('C4', '4n');
+        });
+    </script>
+</body>
+</html>
+
+• // Replace the URL with the actual URL of the web page you want to scrape
+const url = 'https://example.com/your-page';
+
+fetch(url)
+  .then(response => response.text())
+  .then(html => {
+    // Create a DOM parser to parse the HTML content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Locate the table you want to scrape
+    const table = doc.querySelector('table'); // Replace 'table' with appropriate selectors
+
+    // Extract data from the table
+    const data = [];
+    table.querySelectorAll('tr').forEach(row => {
+      const rowData = [];
+      row.querySelectorAll('td').forEach(cell => {
+        rowData.push(cell.textContent.trim());
+      });
+      data.push(rowData);
+    });
+
+    // Now 'data' contains the scraped information from the table
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+  
+  // Import Tone.js if you haven't already
+const Tone = require('tone');
+
+// Initialize Tone.js
+Tone.start();
+
+// Define the desired frequency you want to match
+const desiredFrequency = 440; // Change this to the frequency you want to match
+
+// Create a variable to track whether a match has been found
+let isMatchFound = false;
+
+// Create a variable to store the timeout ID
+let matchCheckTimeout;
+
+// Function to simulate getting the global frequency from your instrument (replace this with your actual function)
+function getGlobalFrequency() {
+  // Replace this with your code to get the global frequency from your instrument
+  // For demonstration, we'll just return a random frequency between 430 and 450 Hz
+  return Math.random() * 20 + 430;
+}
+
+// Function to check for a match
+function checkForMatch() {
+  // Get the current global frequency (you should update this with your instrument)
+  const currentFrequency = getGlobalFrequency(); // Replace this with your actual function
+
+  // Check if the current frequency matches the desired frequency
+  if (Math.abs(currentFrequency - desiredFrequency) < 1) { // Adjust the threshold as needed
+    isMatchFound = true;
+    println('Successful match!'); // Assuming you have a println function
+    clearTimeout(matchCheckTimeout); // Stop checking when a match is found
+  } else {
+    // Continue checking if a match hasn't been found
+    matchCheckTimeout = setTimeout(checkForMatch, 100); // Adjust the interval as needed
+  }
+}
+
+// Function called when the item is used
+function onUse() {
+  if (!isMatchFound) {
+    // Start the background check for a match
+    matchCheckTimeout = setTimeout(checkForMatch, 100); // Adjust the interval as needed
+  }
+}
+
+// Example: Simulate using the item
+onUse();
