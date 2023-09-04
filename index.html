@@ -21,13 +21,15 @@
     <body>
       
   <div id="frequency-device">
+        <div id="range-container">
+    <input type="range" id="volumeSlider" clmin="0" max="1" step="0.01" value="0.5">
+    </div>
     <canvas id="canvas" width="150" height="150"></canvas>
     <div id="step-display">Step: 1</div>
     <div class="button-container">
       <button id="switch-one" class="device-button" onsubmit="frequencySwitch()">440</button>
       <button id="switch-two" class="device-button" onsubmit="frequencySwitch()">432</button>
     </div>
-    
   </div>
 
 <!-- Game content -->
@@ -55,6 +57,7 @@
         <div id="healthvalue">100</div>
       </div>
 
+
 <div id="output"
      class="scrollable"></div>
 
@@ -65,7 +68,10 @@
   <span><blink>OkayBenji Text Adventure engine ++++ always look for items and characters, type: items and chars ++++ type: help for instructions ++++ be sure to type: look if there's any changes ++++ </blink></span>
      </marquee>
 </div>
-  
+      <div id="device-values" class="hidden">
+        <span id="devFrq">000</span>
+         <span id="devNts">0</span>
+      </div>
  
 <!-- Player input -->
 <div class="input">
@@ -107,4 +113,3 @@
 
 </body>
 </html>
-
