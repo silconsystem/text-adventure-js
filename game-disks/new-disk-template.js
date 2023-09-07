@@ -12,7 +12,7 @@ const newDiskTemplate = () => ({
 
         //playAudio(gameSounds().battleSounds[0].sndUrl);
         //soundPlayer(gameSounds().battleSounds[0].sndUrl);
-        soundPlayer(440);
+        //soundPlayer(440);
 
 
       },
@@ -168,38 +168,177 @@ const newDiskTemplate = () => ({
         *         LOCK ITEM
         * 
         **/
+        /**
+        *         DOORLOCK TEST
+        **/
         {
-          name: 'lock',
-          desc: 'LOCK mechanism',
+          name: 'portal',
+          imgUrl: ['img/door-lockD.png', 'img/door-lockC.png', 'img/door-lockB.png', 'img/door-lockA.png', 'img/door-open.jpg'],
           isTakeable: false,
           onUse() {
-            
-            const unlockFreq = 523;
-            
+
+            const portalItem = getItem('portal');
+
+            if (lockedA && lockedB && lockedC && lockedD) {
+
+              // display image default
+              displayImageByRoomId(portalItem.imgUrl[0]);
+              console.log(portalItem.imgUrl[0]);
+            } else if (!lockedA && lockedB && lockedC && lockedD) {
+
+              displayImageByRoomId(portalItem.imgUrl[1]);
+              console.log(portalItem.imgUrl[1])
+            } else if (!lockedA && !lockedB && lockedC && lockedD) {
+
+              displayImageByRoomId(portalItem.imgUrl[2]);
+              console.log(portalItem.imgUrl[2]);
+            } else if (!lockedA && !lockedB && !lockedC && lockedD) {
+
+              displayImageByRoomId(portalItem.imgUrl[3]);
+              console.log(portalItem.imgUrl[3]);
+            } else if (!lockedA && !lockedB && !lockedC && !lockedD) {
+
+              displayImageByRoomId(portalItem.imgUrl[4]);
+              console.log(portalItem.imgUrl[4]);
+            }
+
+            console.log(`portal locked: ${portalLocked}\nlocked A: ${lockedA}\nlocked B: ${lockedB}\nlocked C: ${lockedC}\nlocked D: ${lockedD}`);
+          },
+      },
+      /**
+      *         *************
+      **/
+      // LOCK A
+        {
+          name: 'green-lock',
+          desc: 'this must be one of the LOCK mechanisms, it has a big GREEN symbol on it',
+          isTakeable: false,
+          onUse() {
+
+            const unlockFreq = 466;
+
             println(`the door mechanism opens with the device if you find the right sonic key, thats what the CREATURES told me\nlets try turning the dail and pressing some buttons !! `);
 
             if (!isMatchFound) {
               // Start the background check for a match
               const checkInterval = setInterval(() => {
-                
+
                 checkForMatch(unlockFreq);
-                
+
                 if (isMatchFound) {
                   clearInterval(checkInterval);
-                  
+
+                  lockedA = false;
                   println(`you successfully unlocked this mechanism`);
-                  
+
+                  // add this lock to the global locks array
+                  locks.push(this.name);
+
+                  console.log(`194::onUse function, in "lock" item\nsuccessfully matched played frequency: ${currentNoteFrequency} with unlock frequency: ${unlockFreq}`);
+                }
+              }, 6000);
+            }
+          },
+        },
+        {
+          name: 'orange-lock',
+          desc: 'this must be one of the LOCK mechanisms, it has a big GREEN symbol on it',
+          isTakeable: false,
+          onUse() {
+
+            const unlockFreq = 523;
+
+            println(`the door mechanism opens with the device if you find the right sonic key, thats what the CREATURES told me\nlets try turning the dail and pressing some buttons !! `);
+
+            if (!isMatchFound) {
+              // Start the background check for a match
+              const checkInterval = setInterval(() => {
+
+                checkForMatch(unlockFreq);
+
+                if (isMatchFound) {
+                  clearInterval(checkInterval);
+
+                  lockedA = false;
+                  println(`you successfully unlocked this mechanism`);
+
+                  // add this lock to the global locks array
+                  locks.push(this.name);
+
                   console.log(`194::onUse function, in "lock" item\nsuccessfully matched played frequency: ${currentNoteFrequency} with unlock frequency: ${unlockFreq}`);
                 }
               }, 100);
             }
           },
-         },
+        },
+        {
+          name: 'violet-lock',
+          desc: 'this must be one of the LOCK mechanisms, it has a big GREEN symbol on it',
+          isTakeable: false,
+          onUse() {
 
-        /**
-        * 
-        * 
-        */
+            const unlockFreq = 466;
+
+            println(`the door mechanism opens with the device if you find the right sonic key, thats what the CREATURES told me\nlets try turning the dail and pressing some buttons !! `);
+
+            if (!isMatchFound) {
+              // Start the background check for a match
+              const checkInterval = setInterval(() => {
+
+                checkForMatch(unlockFreq);
+
+                if (isMatchFound) {
+                  clearInterval(checkInterval);
+
+                  lockedA = false;
+                  println(`you successfully unlocked this mechanism`);
+
+                  // add this lock to the global locks array
+                  locks.push(this.name);
+
+                  console.log(`194::onUse function, in "lock" item\nsuccessfully matched played frequency: ${currentNoteFrequency} with unlock frequency: ${unlockFreq}`);
+                }
+              }, 100);
+            }
+          },
+        },
+        {
+          name: 'yellow-lock ',
+          desc: 'this must be one of the LOCK mechanisms, it has a big GREEN symbol on it',
+          isTakeable: false,
+          onUse() {
+
+            const unlockFreq = 466;
+
+            println(`the door mechanism opens with the device if you find the right sonic key, thats what the CREATURES told me\nlets try turning the dail and pressing some buttons !! `);
+
+            if (!isMatchFound) {
+              // Start the background check for a match
+              const checkInterval = setInterval(() => {
+
+                checkForMatch(unlockFreq);
+
+                if (isMatchFound) {
+                  clearInterval(checkInterval);
+
+                  lockedA = false;
+                  println(`you successfully unlocked this mechanism`);
+
+                  // add this lock to the global locks array
+                  locks.push(this.name);
+
+                  console.log(`194::onUse function, in "lock" item\nsuccessfully matched played frequency: ${currentNoteFrequency} with unlock frequency: ${unlockFreq}`);
+                }
+              }, 100);
+            }
+          },
+        },
+
+
+              /**
+              * 
+              * 
+              */
         {
           name: 'nametag',
           imgUrl: 'img/item/nametag.png',
@@ -275,7 +414,7 @@ const newDiskTemplate = () => ({
         },
       ],
     },
-    // ROOM: CLEARING
+          // ROOM: CLEARING
     {
       id: 'clearing',
       imgUrl: 'img/clearing.png',
@@ -325,8 +464,8 @@ const newDiskTemplate = () => ({
           id: 'shed',
         },
       ],
-    },
-    // SHED ROOM
+          },
+          // SHED ROOM
     {
       id: 'shed',
       imgUrl: 'img/shed.png',
@@ -342,7 +481,7 @@ const newDiskTemplate = () => ({
             println('you try lighting a match but they are wet and fall apart in your hands.');
             getItem('matchbox').desc = `the matches have become unusable.`;
           }
-      },
+        },
         {
           name: 'battery',
           imgUrl: 'img/item/battery.png',
@@ -380,13 +519,12 @@ const newDiskTemplate = () => ({
               }
             }
           },
-      },
+        },
         {
           name: 'staircase',
           desc: 'It is a spiral staircase, go SOUTH to use it',
           onUse: () => println('type SOUTH to use the staircase.'),
-      },
-
+        },
       ],
       exits: [
         {
@@ -399,7 +537,7 @@ const newDiskTemplate = () => ({
         }
       ],
     },
-    //     CELLAR ROOM
+          //     CELLAR ROOM
     {
       id: 'cellar',
       imgUrl: 'img/cellar.png',
@@ -482,7 +620,7 @@ const newDiskTemplate = () => ({
         },
       ],
     },
-    // LARGE HALL
+          // LARGE HALL
     {
       id: 'large hall',
       imgUrl: 'img/large_hall.png',
@@ -494,6 +632,17 @@ const newDiskTemplate = () => ({
           imgUrl: 'img/item/frog.png',
           desc: `a small reptile it seems, CREATURE TWO has is in his hands`,
           isTakeable: false,
+        },
+        {
+          name: 'device',
+          imgUrl: 'img/item/device.png',
+          desc: `the DEVICE the CREATURES gave you is a small thin rectangle with strange text on it...\nwhen you touch it a weird arrow appears that emits sounds when you rotate it.\nthere are values changing when you turn the dial.`,
+          isTakeable: true,
+          onUse() {
+
+            // open device
+            toggleFrequencyDevice();
+          },
         },
       ],
       exits: [
@@ -525,12 +674,14 @@ const newDiskTemplate = () => ({
       id: 'alcove',
       imgUrl: 'img/alcove.png',
       name: 'alcove',
-      desc: `into a narrower passage. He comes upon a stout wooden door adorned with ancient symbols pulsating with an eerie glow.`,
+      desc: `into a narrower passage. you comes upon a stout wooden door adorned with ancient symbols pulsating with an eerie glow.`,
     },
-    {
-
-    },
-    // DEATH
+    /**
+     * 
+     *  †********†
+     * 
+     **/
+          // DEATH
     {
       id: 'death',
       imgUrl: 'img/game_over.png',
@@ -564,16 +715,37 @@ const newDiskTemplate = () => ({
       name: ['child', 'kid'],
       alive: true,
       roomId: 'start',
+      characterImg: 'img/character/child.png',
+      characterSnd: 'sounds/child-murmur.wav',
       desc: 'this KID is crying his little face off !!!',
-      onTalk: () => println(`can you help me open this door ?`),
+      onTalk() {
+        
+        showCharacterImg(this);
+        playAudio(this.characterSnd);
+        
+        println(`can you help me open this door ?`);
+        
+      },
       topics: [
         {
           option: `how to open the DOOR?`,
           line: `LOOK for the AXE to cut the VINES.`,
+          onSelected() {
+            
+            const child = getCharacter('child');
+            
+            showCharacterImg(child);
+          },
         },
         {
           option: `what is BEHIND the DOOR`,
           line: `my pet FROG went there !`,
+          onSelected() {
+            
+            const child = getCharacter('child');
+            
+            showCharacterImg(child);
+          },
         },
         {
           option: `why should I CARE ??`,
@@ -581,6 +753,9 @@ const newDiskTemplate = () => ({
           onSelected() {
             const room = getRoom('start');
             const exit = getExit('north', room.exits);
+            const child = getCharacter('child');
+            
+            showCharacterImg(child);
 
             if (exit.block) {
 
@@ -599,8 +774,16 @@ const newDiskTemplate = () => ({
     {
       name: ['noise', 'voice'],
       roomId: 'clearing',
+      characterImg: 'img/character/noisy.png',
+      characterSnd: 'sounds/noises.wav',
       desc: 'you hear a NOISE, like whispering in the woods...',
-      onTalk: () => println(`turn back now !!!, now the whisper has become a threatening deep voice`),
+      onTalk() {
+        
+        showCharacterImg(this);
+        playAudio(this.characterSnd);
+        
+        println(`turn back now !!!, now the whisper has become a threatening deep voice`);
+      },
       topics: [
         {
           option: `WHO is there !?`,
@@ -608,7 +791,8 @@ const newDiskTemplate = () => ({
           onSelected() {
 
             const character = getCharacter('noise');
-
+            showCharacterImg(character);
+            
             character.desc = 'the NOISE has become a VOICE';
           },
         },
@@ -618,7 +802,8 @@ const newDiskTemplate = () => ({
           onSelected() {
 
             const character = getCharacter('noise');
-
+            showCharacterImg(character);
+            
             character.desc = 'the VOICE is freaking you out';
           },
         },
@@ -628,6 +813,7 @@ const newDiskTemplate = () => ({
           onSelected() {
 
             const character = getCharacter('noise');
+            showCharacterImg(character);
 
             character.desc = 'the VOICE has disappeared.';
 
@@ -819,13 +1005,13 @@ const newDiskTemplate = () => ({
                               },
                              },
                            ];
-                        },
+                         },
                        },
                      ];
                     creature.desc = `they're laughing at you!!`;
 
-                    delete exitNorth;
-                    delete exitSouth;
+                    delete exitNorth.block;
+                    delete exitSouth.block;
 
                     getRoom('large hall').desc = 'the CREATURES are walking around mumbling and you see exits to the NORTH and SOUTH opening up behind them';
 
@@ -840,6 +1026,11 @@ const newDiskTemplate = () => ({
           option: 'just STUMBLED in...',
           line: 'is that so',
           removeOnRead: true,
+          onSelected() {
+            
+            println(`sure you did human... you feel the stare of its almond shape black shiny eyes!`);
+            
+          },
         },
       ],
     },

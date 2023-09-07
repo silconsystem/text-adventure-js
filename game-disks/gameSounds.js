@@ -570,10 +570,13 @@ function checkForMatch(targetFreq) {
 
   // Check if the current frequency matches the desired frequency
   if (Math.abs(currFQ - targetFreq) < 1) { // Adjust the threshold as needed
-    isMatchFound = true;
-    println('Successful match!'); // Assuming you have a println function
+  
+    
+    
     clearTimeout(matchCheckTimeout); // Stop checking when a match is found
+    isMatchFound = true;
   } else {
+    
     // Continue checking if a match hasn't been found
     matchCheckTimeout = setTimeout(checkForMatch(targetFreq), 5000); // Adjust the interval as needed
   }
