@@ -8,6 +8,11 @@
   src: url('../fonts/XidusLeadeaTechno.ttf');
 }
 
+@font-face {
+  font-family: 'AlienAlphabet.otf';
+  src: url('../fonts/AlienAlphabet.otf');
+}
+
 body {
   color: #ff8012;
   font-size: 2.2vh;
@@ -175,13 +180,14 @@ input[type="range"]#volumeSlider::-webkit-slider-thumb {
     opacity: 1;
   }
   to {
-    opacity: 0.5;
+    opacity: 0;
   }
 }
 
 .alienFont {
-  font-family: 'XidusLeadeaTechno.ttf';
-  color: teal;
+  /*font-family: 'XidusLeadeaTechno.ttf';*/
+  font-family: 'AlienAlphabet.otf';
+  color: gold;
   font-weight: bold;
   font-size: 1.9vw;
   display: inline;
@@ -216,6 +222,7 @@ input[type="range"]#volumeSlider::-webkit-slider-thumb {
 }
 
 #healthvalue {
+  padding: 10px;
   text-align: center;
   font-weight: bold;
 }
@@ -427,3 +434,80 @@ span {
     background: black;
   }
 }
+
+/*  ANIMATED IMAGE SLIDER */
+.container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: none;
+}
+
+@keyframes travelAndFade {
+  0% {
+    left: -100px; /* Start off-screen to the left */
+    opacity: 0; /* Hidden */
+  }
+  25% {
+    left: 25%; /* Move to the right by 25% of the container width */
+    opacity: 0.2; /* Fully visible */
+  }
+  50% {
+    left: 50%; /* Move to the center */
+    opacity: 0.5; /* Hidden again */
+  }
+  75% {
+    left: 75%; /* Move to the right by 75% of the container width */
+    opacity: 0.7; /* Fully visible */
+  }
+  100% {
+    left: 90%; /* Move off-screen to the right */
+    opacity: 1; /* Hidden */
+  }
+}
+/* DIALOGUE IMAGE DISPLAY */
+/* Style for the dialog box container */
+.dialog-box {
+    position: absolute;
+    top: 70%;
+    left: 70%;
+    width: 150px;
+    height: 200px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 2px solid #000;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: none; /* Initially hidden */
+    animation: travelAndFade 2s linear forwards;
+}
+
+/* Style for the character image */
+#character-image.character-image img {
+    width: 150px; /* Adjust the size as needed */
+    height: 200px;
+}
+
+.character-image {
+  opacity: 0; /* Initially hidden */
+  animation-timing-function: ease-in-out; 
+}
+
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 0.5s; 
+  animation-fill-mode: forwards; 
+}
+
+.fade-out {
+  animation-name: fadeOut;
+  animation-duration: 3s;
+  animation-fill-mode: forwards; 
+}
+/* Style for the dialog content */
+.dialog-content {
+    padding: 10px;
+}
+
+/* Add more styles as needed */
