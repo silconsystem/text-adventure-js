@@ -275,3 +275,56 @@ Room 2 - Enigmatic Door
 [Exits: South]
 
 The man can interact with:
+
+
+PUZZLE PARTZ
+• Yes, there are various occult and esoteric studies that explore the relationship between frequencies, planets, and the Kabbalistic Sephiroth, often tied to the study of the Tarot. One notable system is the "Hermetic Qabalah," which combines elements of Hermeticism, Kabbalah, and Tarot into a unified framework.
+
+In Hermetic Qabalah, each Sephirah on the Tree of Life is associated with specific planets and astrological correspondences. These associations are sometimes extended to musical notes, colors, and frequencies, creating a holistic and symbolic system. Here's a simplified overview:
+
+1. Kether (Crown) - Associated with the Primum Mobile or the Fixed Stars. It may not have a specific musical note but can be associated with higher frequencies or cosmic sounds.
+
+2. Chokmah (Wisdom) - Associated with the Zodiac and the realm of the fixed stars. Frequencies associated with celestial harmony.
+
+3. Binah (Understanding) - Associated with Saturn. Frequencies associated with the slow-moving, contemplative energy of Saturn.
+
+4. Chesed (Mercy) - Associated with Jupiter. Frequencies associated with expansion, growth, and joviality.
+
+5. Geburah (Severity) - Associated with Mars. Frequencies associated with action, conflict, and courage.
+
+6. Tiphereth (Beauty) - Associated with the Sun. Frequencies associated with vitality, illumination, and creativity.
+
+7. Netzach (Eternity) - Associated with Venus. Frequencies associated with harmony, love, and beauty.
+
+8. Hod (Glory) - Associated with Mercury. Frequencies associated with communication, intellect, and quicksilver-like qualities.
+
+9. Yesod (Foundation) - Associated with the Moon. Frequencies associated with intuition, emotions, and the fluctuating tides of life.
+
+10. Malkuth (Kingdom) - Associated with Earth. Frequencies associated with the material realm and grounded energies.
+
+These associations can vary between different Hermetic Qabalistic traditions, and they are often used for meditation, ritual, and divination purposes within these systems. Exploring these correspondences can be a fascinating journey if you're interested in esoteric studies and the interplay of symbolism between planets, frequencies, and the Sephiroth of the Tarot.
+
+ Associating specific musical note frequencies with colors based on the interpretation you provided can be somewhat arbitrary and subjective, as there isn't a direct, universally accepted mapping between the two in traditional Kabbalistic teachings. However, if you'd like to create a loose association for creative or symbolic purposes, you could consider the following approximate note frequencies for each color:
+
+1. White (Kether - Crown) - Perhaps no specific note, as white can represent the unity of all colors.
+
+2. Grey (Chokmah - Wisdom) - A neutral note like C or D.
+
+3. Black (Binah - Understanding) - No specific note, as black often represents absence or mystery.
+
+4. Blue (Chesed - Mercy) - A note like E or F.
+
+5. Red (Geburah - Severity) - A note like G or A.
+
+6. Yellow (Tiphereth - Beauty) - A note like B or C.
+
+7. Green (Netzach - Eternity) - A note like D or E.
+
+8. Orange (Hod - Glory) - A note like F or G.
+
+9. Violet (Yesod - Foundation) - A note like A or B.
+
+10. Indigo (Malkuth - Kingdom) - A note like C or D.
+
+Remember that these associations are highly symbolic and may not have any scientific or musical basis. They are meant for artistic or spiritual exploration rather than any objective measurement of frequencies or colors.
+      //  },

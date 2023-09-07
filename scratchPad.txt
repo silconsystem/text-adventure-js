@@ -1,167 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        #frequency-device {
-            width: 150px;
-            height: 150px;
-            position: absolute;
-            overflow: hidden;
-            border: 2px solid #000;
-        }
-        #step-display {
-            margin-top: 10px;
-            cursor: move;
-        }
-    </style>
+  <style>
+    /* Style the console div */
+    #console {
+      width: 300px;
+      height: 200px;
+      border: 1px solid #ccc;
+      overflow: auto;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
-    <div id="frequency-device">
-        <canvas id="canvas" width="150" height="150"></canvas>
-        <div id="step-display">Step: 1</div>
-    </div>
-    
-    <button onclick="toggleFrequencyDevice()">Toggle Frequency Device</button>
+  <!-- Create a div for the console -->
+  <div id="console"></div>
 
-    <script>
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
-        const stepDisplay = document.getElementById("step-display");
-        const frequencyDevice = document.getElementById("frequency-device");
-
-        const triangleSize = 50; // Size of the triangle
-        let rotationStep = 1;
-        let isDeviceVisible = false;
-        let isDragging = false;
-        let offsetX, offsetY;
+  <script>
+    // Function to execute and display the result in the console
+    function executeFunction() {
+      try {
+        // Get the input from the user
+        const input = prompt('Enter JavaScript code:');
         
-        function setDefaultPosition() {
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
-            const defaultX = (screenWidth - 150) / 2; // Center horizontally
-            const defaultY = 20; // 20px from the top
-            frequencyDevice.style.left = defaultX + "px";
-            frequencyDevice.style.top = defaultY + "px";
-        }
+        // Execute the input as JavaScript code
+        const result = eval(input);
         
-        function limitDraggableArea() {
-            const maxWidth = 600;
-            const maxHeight = 300;
-            const currentX = parseFloat(frequencyDevice.style.left);
-            const currentY = parseFloat(frequencyDevice.style.top);
-            
-            if (isNaN(currentX) || isNaN(currentY)) {
-                return;
-            }
-            
-            if (currentX < 0) {
-                frequencyDevice.style.left = "0px";
-            }
-            if (currentX > maxWidth) {
-                frequencyDevice.style.left = maxWidth + "px";
-            }
-            if (currentY < 0) {
-                frequencyDevice.style.top = "0px";
-            }
-            if (currentY > maxHeight) {
-                frequencyDevice.style.top = maxHeight + "px";
-            }
-        }
+        // Display the result in the console
+        const consoleDiv = document.getElementById('console');
+        consoleDiv.innerHTML += `<p>> ${input}</p>`;
+        consoleDiv.innerHTML += `<p>${result}</p>`;
+      } catch (error) {
+        // Handle any errors
+        console.error(error);
+      }
+    }
+  </script>
 
-        function drawTriangle(angle) {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(angle);
-            ctx.beginPath();
-            ctx.moveTo(0, -triangleSize / 2);
-            ctx.lineTo(-triangleSize / 2, triangleSize / 2);
-            ctx.lineTo(triangleSize / 2, triangleSize / 2);
-            ctx.closePath();
-            ctx.fillStyle = "blue";
-            ctx.fill();
-            ctx.restore();
-        }
-
-        function updateStepDisplay() {
-            stepDisplay.textContent = `Step: ${rotationStep}`;
-        }
-
-        function rotateTriangle(event) {
-            const step = event.type === "mousemove" || event.type === "touchmove" ? 1 : 2;
-            rotationStep += step;
-            if (rotationStep > 12) {
-                rotationStep = 1;
-            }
-            const angle = (rotationStep - 1) * (Math.PI / 6);
-            drawTriangle(angle);
-            updateStepDisplay();
-        }
-
-        canvas.addEventListener("mousemove", rotateTriangle);
-        canvas.addEventListener("touchstart", rotateTriangle);
-        canvas.addEventListener("touchmove", rotateTriangle);
-
-        function toggleFrequencyDevice() {
-            isDeviceVisible = !isDeviceVisible;
-            frequencyDevice.style.display = isDeviceVisible ? "block" : "none";
-            
-            if (isDeviceVisible) {
-                setDefaultPosition();
-            }
-        }
-
-        stepDisplay.addEventListener("mousedown", (e) => {
-            isDragging = true;
-            offsetX = e.clientX - frequencyDevice.getBoundingClientRect().left;
-            offsetY = e.clientY - frequencyDevice.getBoundingClientRect().top;
-        });
-
-        stepDisplay.addEventListener("touchstart", (e) => {
-            isDragging = true;
-            offsetX = e.touches[0].clientX - frequencyDevice.getBoundingClientRect().left;
-            offsetY = e.touches[0].clientY - frequencyDevice.getBoundingClientRect().top;
-        });
-
-        document.addEventListener("mousemove", (e) => {
-            if (isDragging) {
-                let x = e.clientX - offsetX;
-                let y = e.clientY - offsetY;
-                frequencyDevice.style.left = x + "px";
-                frequencyDevice.style.top = y + "px";
-                limitDraggableArea();
-            }
-        });
-
-        document.addEventListener("touchmove", (e) => {
-            if (isDragging) {
-                let x = e.touches[0].clientX - offsetX;
-                let y = e.touches[0].clientY - offsetY;
-                frequencyDevice.style.left = x + "px";
-                frequencyDevice.style.top = y + "px";
-                limitDraggableArea();
-            }
-        });
-
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
-
-        document.addEventListener("touchend", () => {
-            isDragging = false;
-        });
-
-        drawTriangle(0); // Initial drawing
-        updateStepDisplay();
-    </script>
+  <!-- Button to trigger the function execution -->
+  <button onclick="executeFunction()">Execute Function</button>
 </body>
 </html>
 
+body {
+  margin: 0;
+  overflow: hidden;
+}
 
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#animatedImage {
+  position: absolute;
+  left: -100px; /* Start off-screen to the left */
+  opacity: 0; /* Initially hidden */
+  animation: travelAndFade 5s linear infinite;
+}
+
+@keyframes travelAndFade {
+  0% {
+    left: -100px; /* Start off-screen to the left */
+    opacity: 0; /* Hidden */
+  }
+  25% {
+    left: 25%; /* Move to the right by 25% of the container width */
+    opacity: 1; /* Fully visible */
+  }
+  50% {
+    left: 50%; /* Move to the center */
+    opacity: 0; /* Hidden again */
+  }
+  75% {
+    left: 75%; /* Move to the right by 75% of the container width */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    left: 100%; /* Move off-screen to the right */
+    opacity: 0; /* Hidden */
+  }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Animation</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container" id="imageContainer">
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Animation</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container" id="imageContainer">
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+// Function to create and animate an image
+function createAndAnimateImage() {
+  const container = document.getElementById('imageContainer');
+  const image = new Image();
+  image.src = 'your-image.png';
+  image.className = 'animatedImage';
+
+  container.appendChild(image);
+
+  image.addEventListener('animationiteration', () => {
+    // This event is triggered when the animation completes one iteration
+    container.removeChild(image); // Remove the image element
+    setTimeout(createAndAnimateImage, 1000); // Add a delay before creating the next image
+  });
+}
+
+// Start the animation
+createAndAnimateImage();
